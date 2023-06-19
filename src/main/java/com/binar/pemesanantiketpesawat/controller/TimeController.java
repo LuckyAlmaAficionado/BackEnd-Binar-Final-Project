@@ -19,7 +19,7 @@ public class TimeController {
     @Autowired
     private TimeService timeService;
 
-    @PostMapping("/add-time")
+    @PostMapping("/add")
     public ResponseEntity<MessageModel> addNewTime(@RequestBody TimeRequest timeRequest) {
         MessageModel messageModel = new MessageModel();
         Time timeResponse = timeService.addNewTime(timeRequest);
@@ -35,7 +35,7 @@ public class TimeController {
         }
     }
 
-    @GetMapping("/get-all-time")
+    @GetMapping("/getAll")
     public ResponseEntity<MessageModel> getAllTime() {
         MessageModel messageModel = new MessageModel();
         List<Time> timeResponse = timeService.getAllTime();
