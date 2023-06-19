@@ -25,7 +25,7 @@ public class PemesananTiketPesawatApplication {
                         .allowedOrigins(
                                 "http://localhost:3000",
                                 "http://localhost:3001",
-                                "https://binar-backend-final-project-production.up.railway.app",
+                                "https://backend-binar-final-project-production.up.railway.app/",
                                 "*");
             }
         };
