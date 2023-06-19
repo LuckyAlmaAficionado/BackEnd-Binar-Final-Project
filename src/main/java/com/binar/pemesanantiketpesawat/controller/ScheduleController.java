@@ -4,13 +4,8 @@ import com.binar.pemesanantiketpesawat.dto.MessageModel;
 import com.binar.pemesanantiketpesawat.dto.ScheduleRequest;
 import com.binar.pemesanantiketpesawat.model.Schedule;
 import com.binar.pemesanantiketpesawat.service.ScheduleService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +58,6 @@ public class ScheduleController {
 
 
     @PostMapping("/add-schedule")
-    @ResponseStatus(HttpStatus.CREATED)
     private ResponseEntity<MessageModel> addSchedule(@RequestBody ScheduleRequest scheduleRequest) {
         MessageModel messageModel = new MessageModel();
         Schedule scheduleResponse = scheduleService.addSchedule(scheduleRequest);
