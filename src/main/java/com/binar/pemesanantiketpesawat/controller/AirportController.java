@@ -21,11 +21,43 @@ public class AirportController {
     @GetMapping("/get-airport")
     public ResponseEntity<MessageModel> getAllAirport() {
         MessageModel messageModel = new MessageModel();
-        List<Airport> airportResponse = airportService.getAllAirport();
+        List<String> airportResponse = airportService.getAllAirport();
         if (airportResponse == null) {
             messageModel.setStatus(HttpStatus.BAD_REQUEST.value());
             messageModel.setMessage("Failed to get airport");
             return ResponseEntity.badRequest().body(messageModel);
+        } else {
+            messageModel.setStatus(HttpStatus.OK.value());
+            messageModel.setMessage("Success to get airport");
+            messageModel.setData(airportResponse);
+            return ResponseEntity.ok().body(messageModel);
+        }
+    }
+
+    @GetMapping("/getDepartureAirport")
+    public ResponseEntity<MessageModel> getDepartureAirport() {
+        MessageModel messageModel = new MessageModel();
+        List<String> airportResponse = airportService.getDepartureAirport();
+        if (airportResponse == null) {
+            messageModel.setStatus(HttpStatus.NO_CONTENT.value());
+            messageModel.setMessage("Failed to get airport");
+            return ResponseEntity.noContent().build();
+        } else {
+            messageModel.setStatus(HttpStatus.OK.value());
+            messageModel.setMessage("Success to get airport");
+            messageModel.setData(airportResponse);
+            return ResponseEntity.ok().body(messageModel);
+        }
+    }
+
+    @GetMapping("/getArrivalAirport")
+    public ResponseEntity<MessageModel> getDepartureAirport(@RequestParam String departureRequest) {
+        MessageModel messageModel = new MessageModel();
+        List<String> airportResponse = airportService.getArrivalAirportFromDeparture(departureRequest);
+        if (airportResponse == null) {
+            messageModel.setStatus(HttpStatus.NO_CONTENT.value());
+            messageModel.setMessage("Failed to get airport");
+            return ResponseEntity.noContent().build();
         } else {
             messageModel.setStatus(HttpStatus.OK.value());
             messageModel.setMessage("Success to get airport");

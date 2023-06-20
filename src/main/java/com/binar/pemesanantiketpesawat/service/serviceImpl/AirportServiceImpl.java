@@ -39,28 +39,17 @@ public class AirportServiceImpl implements AirportService {
 
     public List<String> getDepartureAirport() {
         List<String> scheduleResponse = scheduleRepository.findAllDepartureCity();
-        scheduleResponse.forEach(System.out::println);
-        return null;
+        return scheduleResponse;
     }
 
-    public List<String> getArrivalAirport(String departureCity) {
+    public List<String> getArrivalAirportFromDeparture(String departureCity) {
         List<String> scheduleResponse = scheduleRepository.findArrivalCityFromDepartureCity(departureCity);
         return scheduleResponse;
     }
 
     @Override
-    public List<Airport> getAllAirport() {
-
-        List<String> scheduleResponse = scheduleRepository.findAllDepartureCity();
-        scheduleResponse.forEach(s -> {
-            System.out.println("departure airport: " + s);
-            System.out.println(getArrivalAirport(s));
-        });
-//        List<String> scheduleResponse = scheduleRepository.findDepartureCityFromArrivalCity("Melbourne");
-//
-//        for (String schedule : scheduleResponse)
-//            System.out.println(schedule);
-
-        return airportRepository.findAll();
+    public List<String> getAllAirport() {
+        List<String> countryResponse = scheduleRepository.findAllCountry();
+        return countryResponse;
     }
 }
