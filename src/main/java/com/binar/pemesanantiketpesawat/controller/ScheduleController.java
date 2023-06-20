@@ -1,5 +1,6 @@
 package com.binar.pemesanantiketpesawat.controller;
 
+import com.binar.pemesanantiketpesawat.dto.DetailFlightList;
 import com.binar.pemesanantiketpesawat.dto.MessageModel;
 import com.binar.pemesanantiketpesawat.dto.ScheduleRequest;
 import com.binar.pemesanantiketpesawat.model.Schedule;
@@ -45,6 +46,27 @@ public class ScheduleController {
         MessageModel messageModel = new MessageModel();
         try {
             List<Schedule> scheduleResponse = scheduleService.searchAirplaneTicketSchedule(departureDate, departureAirport, arrivalAirport, seatClass);
+            messageModel.setMessage("Success get schedule");
+            messageModel.setStatus(HttpStatus.OK.value());
+            messageModel.setData(scheduleResponse);
+            return ResponseEntity.ok().body(messageModel);
+        } catch (Exception exception) {
+            messageModel.setMessage("Failed get schedule");
+            messageModel.setStatus(HttpStatus.BAD_GATEWAY.value());
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY.value()).body(messageModel);
+        }
+    }
+
+    @GetMapping("/search-schedule")
+    private ResponseEntity<MessageModel> getAirplaneWithSchedule(
+            @RequestParam("depDate") Date departureDate,
+            @RequestParam("depAirport") String departureAirport,
+            @RequestParam("arrAirport") String arrivalAirport,
+            @RequestParam("seatClass") String seatClass
+    ) {
+        MessageModel messageModel = new MessageModel();
+        try {
+            List<DetailFlightList> scheduleResponse = scheduleService.filterDataSchedule(departureDate, departureAirport, arrivalAirport, seatClass);
             messageModel.setMessage("Success get schedule");
             messageModel.setStatus(HttpStatus.OK.value());
             messageModel.setData(scheduleResponse);

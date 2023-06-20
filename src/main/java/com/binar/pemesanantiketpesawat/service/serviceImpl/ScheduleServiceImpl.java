@@ -1,8 +1,11 @@
 package com.binar.pemesanantiketpesawat.service.serviceImpl;
 
+import com.binar.pemesanantiketpesawat.dto.DetailFlight;
+import com.binar.pemesanantiketpesawat.dto.DetailFlightList;
 import com.binar.pemesanantiketpesawat.dto.ScheduleRequest;
 import com.binar.pemesanantiketpesawat.model.Airline;
 import com.binar.pemesanantiketpesawat.model.Schedule;
+import com.binar.pemesanantiketpesawat.model.Seat;
 import com.binar.pemesanantiketpesawat.model.Time;
 import com.binar.pemesanantiketpesawat.repository.AirlineRepository;
 import com.binar.pemesanantiketpesawat.repository.ScheduleRepository;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +37,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
 
+
+
     @Override
     public Schedule addSchedule(ScheduleRequest scheduleRequest) {
         return scheduleRepository.save(new Schedule(
@@ -48,6 +54,43 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void deleteAllAirplaneTicketSchedule() {
         scheduleRepository.deleteAll();
+    }
+
+    @Override
+    public List<Schedule> searchAirplaneTicketOnlyPlane(Date date, String departure, String arrival, String seat) {
+        List<Schedule> scheduleResponse = scheduleRepository.findByDepartureDateAndDepartureCityAndArrivalCity(date, departure, arrival);
+        return filterDataSearch(scheduleResponse, seat);
+    }
+
+    public List<DetailFlightList> filterDataSchedule(Date date, String departure, String arrival, String seat) {
+
+        List<Schedule> scheduleResponse = filterDataSearch(searchAirplaneTicketSchedule(date, departure, arrival, seat), seat);
+
+        List<DetailFlightList> tempDetailFlightList = new ArrayList<>();
+
+        for (Schedule schedule : scheduleResponse)
+            for (Time time : schedule.getSchedulesList())
+                    for (Airline airline : time.getAirlineList()) {
+                        for (Seat flightClass : airline.getFlightClass()) {
+                            tempDetailFlightList.add(new DetailFlightList(
+                                    schedule.getDepartureCity(),
+                                    time.getDepartureTime(),
+                                    schedule.getDepartureDate(),
+                                    schedule.getArrivalCity(),
+                                    time.getArrivalTime(),
+                                    schedule.getDepartureDate(),
+                                    airline.getAirlineName(),
+                                    airline.getAirlineCode(),
+                                    seat,
+                                    flightClass.getAirlineBaggage(),
+                                    flightClass.getAirlineCabinBaggage(),
+                                    flightClass.getAirlinePrice()
+                            ));
+                        }
+                    }
+
+
+        return tempDetailFlightList;
     }
 
     public List<Schedule> filterDataSearch(List<Schedule> scheduleResponse, String seat) {

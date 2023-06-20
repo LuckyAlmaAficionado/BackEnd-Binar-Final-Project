@@ -10,6 +10,7 @@ import java.util.List;
 public interface AirportService {
 
     Airport addNewAirport(AirportRequest airportRequest);
-
-    List<Airport> getAllAirport();
+    List<String> getAllAirport();
+    List<String> getDepartureAirport();
+    List<String> getArrivalAirportFromDeparture(String departureRequest);
 }
