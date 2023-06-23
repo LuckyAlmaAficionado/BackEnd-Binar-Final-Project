@@ -15,5 +15,6 @@ public interface ScheduleService {
     List<Schedule> searchAirplaneTicketSchedule(Date date, String departure, String arrival, String seat);
     List<DetailFlightList> filterDataSchedule(Date date, String departure, String arrival, String seat);
     Schedule addSchedule(ScheduleRequest scheduleRequest);
+    String calculateFlightDuration(String departureTime, String arrivalTime);
     void deleteAllAirplaneTicketSchedule();
 }

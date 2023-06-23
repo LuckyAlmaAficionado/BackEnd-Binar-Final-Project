@@ -25,6 +25,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
+    @Autowired
+    public ScheduleServiceImpl(ScheduleRepository scheduleRepository) {
+        this.scheduleRepository = scheduleRepository;
+    }
+
     @Override
     public List<Schedule> getAllSchedules() {
         return scheduleRepository.findAll();
@@ -35,8 +40,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<Schedule> scheduleResponse = scheduleRepository.findByDepartureDateAndDepartureCityAndArrivalCity(date, departure, arrival);
         return filterDataSearch(scheduleResponse, seat);
     }
-
-
 
 
     @Override
@@ -120,6 +123,38 @@ public class ScheduleServiceImpl implements ScheduleService {
                                                 .collect(Collectors.toList())
                                 )).collect(Collectors.toList())
                 )).collect(Collectors.toList());
+    }
+
+    @Override
+    public String calculateFlightDuration(String departureTime, String arrivalTime) {
+
+        String[] departureTimeParts = departureTime.split(":");
+        int departureHours = Integer.parseInt(departureTimeParts[0]);
+        int departureMinutes = Integer.parseInt(departureTimeParts[1]);
+
+        String[] arrivalTimeParts = arrivalTime.split(":");
+        int arrivalHours = Integer.parseInt(arrivalTimeParts[0]);
+        int arrivalMinutes = Integer.parseInt(arrivalTimeParts[1]);
+
+        int durationHours;
+        int durationMinutes;
+
+        if (arrivalHours >= departureHours) {
+            durationHours = arrivalHours - departureHours;
+            durationMinutes = arrivalMinutes - departureMinutes;
+        } else {
+            durationHours = (24 - departureHours) + arrivalHours;
+            durationMinutes = arrivalMinutes - departureMinutes;
+        }
+
+        if (durationMinutes < 0) {
+            durationHours -= 1;
+            durationMinutes += 60;
+        }
+
+        String durationString = durationHours + " h " + durationMinutes + " m";
+
+        return durationString;
     }
 }
 

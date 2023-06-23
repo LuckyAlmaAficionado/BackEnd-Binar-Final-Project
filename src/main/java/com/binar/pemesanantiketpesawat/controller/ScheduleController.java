@@ -104,4 +104,9 @@ public class ScheduleController {
         messageModel.setMessage("Successfully delete all data...");
         return ResponseEntity.ok().body(messageModel);
     }
+
+    @GetMapping("/duration/{departureTime}/{arrivalTime}")
+    public String getFlightDuration(@PathVariable String departureTime, @PathVariable String arrivalTime) {
+        return scheduleService.calculateFlightDuration(departureTime, arrivalTime);
+    }
 }
