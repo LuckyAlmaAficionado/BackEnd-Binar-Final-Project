@@ -16,9 +16,9 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @PostMapping("/saveDataPemesan")
-    public Booking saveDataBooking(@RequestBody Booking theOrder) {
-        return bookingService.saveDataBooking(theOrder);
+    @PostMapping
+    private Booking addBooking(@RequestBody Booking bookingRequest) {
+        return bookingService.saveDataBooking(bookingRequest);
     }
 
     @GetMapping("/getDataPemesan")
