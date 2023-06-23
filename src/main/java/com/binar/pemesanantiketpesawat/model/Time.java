@@ -29,6 +29,8 @@ public class Time {
     private java.sql.Time departureTime;
     @Column(name = "arrival_time", nullable = false)
     private java.sql.Time arrivalTime;
+    @Column(name = "long_flight")
+    private String longFlight;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "airline_time_fk", referencedColumnName = "schedule_id", insertable = true, updatable = true)
     private List<Airline> airlineList;
@@ -39,11 +41,12 @@ public class Time {
     @Column(name = "modified_at", insertable = false)
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
-    public Time(Integer scheduleId, Integer departureDateFk, java.sql.Time departureTime, java.sql.Time arrivalTime, List<Airline> airlineList) {
+    public Time(Integer scheduleId, Integer departureDateFk, java.sql.Time departureTime, java.sql.Time arrivalTime,String longFlight, List<Airline> airlineList) {
         this.scheduleId = scheduleId;
         this.departureDateFk = departureDateFk;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
+        this.longFlight = longFlight;
         this.airlineList = airlineList;
     }
 }
