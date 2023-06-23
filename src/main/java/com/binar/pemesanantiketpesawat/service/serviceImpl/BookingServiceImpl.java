@@ -1,7 +1,9 @@
 package com.binar.pemesanantiketpesawat.service.serviceImpl;
 
 import com.binar.pemesanantiketpesawat.model.Booking;
+import com.binar.pemesanantiketpesawat.repository.BookingRepository;
 import com.binar.pemesanantiketpesawat.service.BookingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,20 +12,15 @@ import java.util.List;
 @Service
 public class BookingServiceImpl implements BookingService {
 
-    private List<Booking> bookings;
+    @Autowired
+    private BookingRepository bookingRepository;
 
-    public BookingServiceImpl() {
-        this.bookings = new ArrayList<>();
-    }
-
-    @Override
-    public Booking saveDataBooking(Booking the_order) {
-        bookings.add(the_order);
-        return the_order;
+    public Booking saveDataBooking(Booking orderRequest) {
+        return bookingRepository.save(orderRequest);
     }
 
     @Override
     public List<Booking> getAllPesanan() {
-        return bookings;
+        return bookingRepository.findAll();
     }
 }

@@ -7,6 +7,6 @@ import java.util.List;
 
 @Component
 public interface BookingService {
-    Booking saveDataBooking(Booking the_order);
+    Booking saveDataBooking(Booking bookingRequest);
     List<Booking> getAllPesanan();
 }
