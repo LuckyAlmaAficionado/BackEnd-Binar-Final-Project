@@ -54,12 +54,13 @@ public class DetailServiceImpl implements DetailService {
         Integer totalHarga = totalAdultPassengers + totalChildPassengers + totalBabyPassangers + TAX;
 
         return new DetailFlight(
-            scheduleResponse.getDepartureCity(),
+                scheduleResponse.getDepartureCity(),
                 timeResponse.getDepartureTime(),
                 scheduleResponse.getDepartureDate(),
                 scheduleResponse.getArrivalCity(),
                 timeResponse.getArrivalTime(),
                 scheduleResponse.getDepartureDate(),
+                timeResponse.getLongFlight(),
                 airlineResponse.getAirlineName() + " - " + classResponse,
                 codeRequest,
                 seatResponse.get(0).getAirlineBaggage(),

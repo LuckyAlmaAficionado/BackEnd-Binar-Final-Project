@@ -19,6 +19,7 @@ public class DetailFlight {
     private String arrivalAirport;
     private Time arrivalTime;
     private Date arrivalDate;
+    private String longFlight;
     private String airlineName;
     private String airlineCode;
     private Integer checkedBaggage;
@@ -28,13 +29,14 @@ public class DetailFlight {
     private Integer infantPrice;
     private Integer totalPrice;
 
-    public DetailFlight(String departureAirport, Time departureTime, Date departureDate, String arrivalAirport, Time arrivalTime, Date arrivalDate, String airlineName, String airlineCode, Integer checkedBaggage, Integer cabinBaggage, Integer adultPrice, Integer childPrice, Integer infantPrice) {
+    public DetailFlight(String departureAirport, Time departureTime, Date departureDate, String arrivalAirport, Time arrivalTime, Date arrivalDate,String longFlight, String airlineName, String airlineCode, Integer checkedBaggage, Integer cabinBaggage, Integer adultPrice, Integer childPrice, Integer infantPrice) {
         this.departureAirport = departureAirport;
         this.departureTime = departureTime;
         this.departureDate = departureDate;
         this.arrivalAirport = arrivalAirport;
         this.arrivalTime = arrivalTime;
         this.arrivalDate = arrivalDate;
+        this.longFlight = longFlight;
         this.airlineName = airlineName;
         this.airlineCode = airlineCode;
         this.checkedBaggage = checkedBaggage;

@@ -78,6 +78,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                                     schedule.getDepartureDate(),
                                     schedule.getArrivalCity(),
                                     time.getArrivalTime(),
+                                    time.getLongFlight(),
                                     schedule.getDepartureDate(),
                                     airline.getAirlineName(),
                                     airline.getAirlineCode(),
@@ -107,6 +108,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                                         time.getDepartureDateFk(),
                                         time.getDepartureTime(),
                                         time.getArrivalTime(),
+                                        time.getLongFlight(),
                                         time.getAirlineList().stream()
                                                 .map(airline -> new Airline(
                                                         airline.getAirlineId(),

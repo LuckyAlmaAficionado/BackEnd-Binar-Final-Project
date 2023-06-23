@@ -33,6 +33,7 @@ public class TimeRequestImpl implements TimeService {
                 timeRequest.getDepartureDateFk(),
                 timeRequest.getDepartureTime(),
                 timeRequest.getArrivalTime(),
+                timeRequest.getLongFlight(),
                 null
         ));
     }
