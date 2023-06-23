@@ -9,4 +9,5 @@ public class TimeRequest {
     private Integer departureDateFk;
     private java.sql.Time departureTime;
     private java.sql.Time arrivalTime;
+    private String longFlight;
 }

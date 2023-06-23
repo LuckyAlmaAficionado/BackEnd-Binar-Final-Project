@@ -138,6 +138,53 @@ public class ScheduleServiceImpl implements ScheduleService {
                                     time.getDepartureDateFk(),
                                     time.getDepartureTime(),
                                     time.getArrivalTime(),
+
+                                    time.getLongFlight(),
+                                    schedule.getDepartureDate(),
+                                    airline.getAirlineName(),
+                                    airline.getAirlineCode(),
+                                    seat,
+                                    flightClass.getAirlineBaggage(),
+                                    flightClass.getAirlineCabinBaggage(),
+                                    flightClass.getAirlinePrice()
+                            ));
+                        }
+                    }
+
+
+        return tempDetailFlightList;
+    }
+
+    public List<Schedule> filterDataSearch(List<Schedule> scheduleResponse, String seat) {
+        return scheduleResponse.stream()
+                .map(schedule -> new Schedule(
+                        schedule.getTimeId(),
+                        schedule.getFavoriteFlight(),
+                        schedule.getDepartureDate(),
+                        schedule.getDepartureCity(),
+                        schedule.getArrivalCity(),
+                        schedule.getSchedulesList().stream()
+                                .map(time -> new Time(
+                                        time.getScheduleId(),
+                                        time.getDepartureDateFk(),
+                                        time.getDepartureTime(),
+                                        time.getArrivalTime(),
+                                        time.getLongFlight(),
+                                        time.getAirlineList().stream()
+                                                .map(airline -> new Airline(
+                                                        airline.getAirlineId(),
+                                                        airline.getAirlineTimeFk(),
+                                                        airline.getAirlineName(),
+                                                        airline.getAirlineCode(),
+                                                        airline.getFlightClass().stream()
+                                                                .filter(seats -> seats.getFlightClass().startsWith(seat))
+                                                                .collect(Collectors.toList())
+                                                )).filter(airline -> !airline.getFlightClass().isEmpty())
+                                                .collect(Collectors.toList())
+                                )).collect(Collectors.toList())
+                )).collect(Collectors.toList());
+    }
+=======
                                     time.getAirlineList().stream()
                                         .map(
                                             airline ->
