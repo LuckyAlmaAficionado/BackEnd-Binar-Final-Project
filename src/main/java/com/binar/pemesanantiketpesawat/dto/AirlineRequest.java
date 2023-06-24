@@ -11,5 +11,7 @@ public class AirlineRequest {
     private Integer airlineTimeFk;
     private String airlineName;
     private String airlineCode;
+    private String departureGate;
+    private String arrivalGate;
     List<Seat> flightClass;
 }

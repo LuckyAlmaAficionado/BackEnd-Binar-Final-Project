@@ -9,4 +9,8 @@ public interface DetailService {
             String codeRequest, String classResponse,
             Integer adultsPassenggers, Integer childrensPassenggers,
             Integer babyPassenggers);
+
+    DetailFlight getDetailPenerbanganByCodeRequestAndClassResponse(
+            String codeRequest, String classResponse
+    );
 }

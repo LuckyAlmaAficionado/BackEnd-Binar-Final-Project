@@ -74,4 +74,5 @@ public class AirlineController {
             return ResponseEntity.ok().body(messageModel);
         }
     }
+
 }

@@ -147,4 +147,12 @@ public class ScheduleController {
     messageModel.setMessage("Successfully delete all data...");
     return ResponseEntity.ok().body(messageModel);
   }
+
+  @PutMapping
+  public ResponseEntity<MessageModel> updateSchedule(@RequestBody Schedule scheduleRequest) {
+    MessageModel messageModel = new MessageModel();
+    Schedule scheduleResponse = scheduleService.updateSchedule(scheduleRequest);
+    messageModel.setData(scheduleResponse);
+    return ResponseEntity.ok(messageModel);
+  }
 }

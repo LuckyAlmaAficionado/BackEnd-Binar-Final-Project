@@ -1,6 +1,7 @@
 package com.binar.pemesanantiketpesawat.controller;
 
 
+import com.binar.pemesanantiketpesawat.dto.BookingRequest;
 import com.binar.pemesanantiketpesawat.dto.MessageModel;
 import com.binar.pemesanantiketpesawat.model.Booking;
 import com.binar.pemesanantiketpesawat.service.BookingService;
@@ -15,14 +16,14 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/booking")
+@RequestMapping("/api/v1/booking")
 public class BookingController {
 
     @Autowired
     private BookingService bookingService;
 
     @PostMapping
-    private Booking addBooking(@RequestBody Booking bookingRequest) {
+    private Booking addBooking(@RequestBody BookingRequest bookingRequest) {
         return bookingService.saveDataBooking(bookingRequest);
     }
 

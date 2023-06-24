@@ -29,6 +29,10 @@ public class Airline {
     private String airlineName;
     @Column(name = "airline_code")
     private String airlineCode;
+    @Column(name = "departure_gate")
+    private String departureGate;
+    @Column(name = "arrival_gate")
+    private String arrivalGate;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "airline_code_fk", referencedColumnName = "airline_id", updatable = true, insertable = true)
     List<Seat> flightClass;
@@ -48,10 +52,12 @@ public class Airline {
         this.flightClass = flightClass;
     }
 
-    public Airline(Integer airlineTimeFk, String airlineName, String airlineCode, List<Seat> flightClass) {
+    public Airline(Integer airlineTimeFk, String airlineName, String airlineCode, String departureGate, String arrivalGate, List<Seat> flightClass) {
         this.airlineTimeFk = airlineTimeFk;
         this.airlineName = airlineName;
         this.airlineCode = airlineCode;
+        this.departureGate = departureGate;
+        this.arrivalGate = arrivalGate;
         this.flightClass = flightClass;
     }
 }

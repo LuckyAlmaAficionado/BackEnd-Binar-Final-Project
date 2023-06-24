@@ -18,4 +18,5 @@ public interface ScheduleService {
     List<DetailFlightList> filterDataPriceAsc(Date departureDate, String departureAirport, String arrivalAirport, String seatClass);
     Schedule addSchedule(ScheduleRequest scheduleRequest);
     void deleteAllAirplaneTicketSchedule();
+    Schedule updateSchedule(Schedule scheduleRequest);
 }

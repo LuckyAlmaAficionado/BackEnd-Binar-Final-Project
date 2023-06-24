@@ -37,6 +37,7 @@ public class DetailServiceImpl implements DetailService {
 
         Airline airlineResponse = airlineRepository.findByAirlineCode(codeRequest);
 
+
         List<Seat> seatResponse = seatRepository.findByAirlineCodeFkAndFlightClass(airlineResponse.getAirlineId(), classResponse);
 
         Time timeResponse = timeRepository.findByScheduleId(airlineResponse.getAirlineTimeFk());
@@ -71,5 +72,10 @@ public class DetailServiceImpl implements DetailService {
                 totalHarga
         );
 
+    }
+
+    @Override
+    public DetailFlight getDetailPenerbanganByCodeRequestAndClassResponse(String codeRequest, String classResponse) {
+        return getDetailPenerbangan(codeRequest, classResponse, 0, 0 ,0);
     }
 }

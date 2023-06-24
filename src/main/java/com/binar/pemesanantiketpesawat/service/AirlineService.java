@@ -11,6 +11,5 @@ public interface AirlineService {
 
     Airline searchByAirlineCode(String codeRequest);
     List<Airline> getAllAirline();
-
     Airline addNewAirline(AirlineRequest airlineRequest);
 }

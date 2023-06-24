@@ -33,8 +33,12 @@ public class Schedule {
     private Date departureDate;
     @Column(name = "departure_city", nullable = false)
     private String departureCity;
+    @Column(name = "departure_airport", nullable = false)
+    private String departureAirport;
     @Column(name = "arrival_city", nullable = false)
     private String arrivalCity;
+    @Column(name = "arrival_airport", nullable = false)
+    private String arrivalAirport;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "departure_date_fk", referencedColumnName = "time_id", insertable = true, updatable = true)
     private List<Time> schedulesList;
@@ -55,12 +59,13 @@ public class Schedule {
         this.schedulesList = schedulesList;
     }
 
-    public Schedule(Integer timeId, String continentCategory, Boolean favoriteFlight, Date departureDate, String departureCity, String arrivalCity) {
-        this.timeId = timeId;
+    public Schedule(String continentCategory, Boolean favoriteFlight, Date departureDate, String departureCity, String departureAirport, String arrivalCity, String arrivalAirport) {
         this.continentCategory = continentCategory;
         this.favoriteFlight = favoriteFlight;
         this.departureDate = departureDate;
         this.departureCity = departureCity;
+        this.departureAirport = departureAirport;
         this.arrivalCity = arrivalCity;
+        this.arrivalAirport = arrivalAirport;
     }
 }

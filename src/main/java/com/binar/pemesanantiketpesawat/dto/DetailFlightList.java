@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.Duration;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +17,7 @@ public class DetailFlightList {
     private Date departureDate;
     private String arrivalCity;
     private Time arrivalTime;
-    private String longFlight;
+    private Duration longFlight;
     private Date arrivalDate;
     private String airlineName;
     private String airlineCode;
