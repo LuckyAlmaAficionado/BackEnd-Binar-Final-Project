@@ -8,6 +8,8 @@ import com.binar.pemesanantiketpesawat.service.TimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -27,13 +29,20 @@ public class TimeRequestImpl implements TimeService {
         if (!scheduleResponse) {
             return null;
         }
+        LocalTime from = timeRequest.getDepartureTime().toLocalTime();
+        LocalTime to = timeRequest.getArrivalTime().toLocalTime();
+
+        Duration duration = Duration.between(from, to);
+
+        String flightDuration = duration.toHours() + " Hours " + duration.toMinutesPart() + " Minutes";
+
 
         return timeRepository.save(new Time(
                 0,
                 timeRequest.getDepartureDateFk(),
                 timeRequest.getDepartureTime(),
                 timeRequest.getArrivalTime(),
-                timeRequest.getLongFlight(),
+                flightDuration,
                 null
         ));
     }

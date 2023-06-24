@@ -2,18 +2,19 @@ package com.binar.pemesanantiketpesawat.service.serviceImpl;
 
 import com.binar.pemesanantiketpesawat.dto.DetailFlightList;
 import com.binar.pemesanantiketpesawat.dto.ScheduleRequest;
-import com.binar.pemesanantiketpesawat.model.Airline;
-import com.binar.pemesanantiketpesawat.model.Schedule;
-import com.binar.pemesanantiketpesawat.model.Seat;
-import com.binar.pemesanantiketpesawat.model.Time;
+import com.binar.pemesanantiketpesawat.model.*;
+import com.binar.pemesanantiketpesawat.repository.AirportRepository;
 import com.binar.pemesanantiketpesawat.repository.ScheduleRepository;
 import com.binar.pemesanantiketpesawat.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +22,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Autowired
     private ScheduleRepository scheduleRepository;
+    @Autowired
+    private AirportRepository airportRepository;
 
     @Override
     public List<Schedule> getAllSchedules() {
@@ -36,21 +39,47 @@ public class ScheduleServiceImpl implements ScheduleService {
         return filterDataSearch(scheduleResponse, seat);
     }
 
+    public String findByAirportLocation(String airportLocation) {
+        Airport airportResponse = airportRepository.findByAirportLocation(airportLocation);
+        return airportResponse.getAirportName();
+    }
+
     @Override
     public Schedule addSchedule(ScheduleRequest scheduleRequest) {
+
+        airportRepository.findByAirportLocation(scheduleRequest.getArrivalCity());
+
         return scheduleRepository.save(
                 new Schedule(
-                        0,
                         scheduleRequest.getContinentCategory(),
                         scheduleRequest.getFavoriteFlight(),
                         scheduleRequest.getDepartureDate(),
                         scheduleRequest.getDepartureCity(),
-                        scheduleRequest.getArrivalCity()));
+                        findByAirportLocation(scheduleRequest.getDepartureCity()),
+                        scheduleRequest.getArrivalCity(),
+                        findByAirportLocation(scheduleRequest.getArrivalCity())
+                ));
     }
 
     @Override
     public void deleteAllAirplaneTicketSchedule() {
         scheduleRepository.deleteAll();
+    }
+
+    @Override
+    public Schedule updateSchedule(Schedule scheduleRequest) {
+        Schedule scheduleResponse = scheduleRepository.findByTimeId(scheduleRequest.getTimeId());
+        if (scheduleResponse == null) return null;
+        else {
+            scheduleResponse.setContinentCategory(scheduleRequest.getContinentCategory());
+            scheduleResponse.setFavoriteFlight(scheduleRequest.getFavoriteFlight());
+            scheduleResponse.setDepartureDate(scheduleRequest.getDepartureDate());
+            scheduleResponse.setDepartureCity(scheduleRequest.getDepartureCity());
+            scheduleResponse.setDepartureAirport(scheduleRequest.getDepartureAirport());
+            scheduleResponse.setArrivalCity(scheduleRequest.getArrivalCity());
+            scheduleResponse.setArrivalAirport(scheduleRequest.getArrivalAirport());
+            return scheduleResponse;
+        }
     }
 
     @Override
@@ -102,6 +131,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             for (Time time : schedule.getSchedulesList())
                 for (Airline airline : time.getAirlineList()) {
                     for (Seat flightClass : airline.getFlightClass()) {
+
                         tempDetailFlightList.add(
                                 new DetailFlightList(
                                         schedule.getDepartureCity(),
@@ -109,7 +139,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                                         schedule.getDepartureDate(),
                                         schedule.getArrivalCity(),
                                         time.getArrivalTime(),
-                                        time.getLongFlight(),
+                                        Duration.between(time.getDepartureTime().toLocalTime(), time.getArrivalTime().toLocalTime()),
                                         schedule.getDepartureDate(),
                                         airline.getAirlineName(),
                                         airline.getAirlineCode(),

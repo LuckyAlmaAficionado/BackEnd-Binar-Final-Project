@@ -2,15 +2,11 @@ package com.binar.pemesanantiketpesawat.controller;
 
 import com.binar.pemesanantiketpesawat.model.Passenger;
 import com.binar.pemesanantiketpesawat.request.PassengerRequest;
-import com.binar.pemesanantiketpesawat.service.OrderService;
 import com.binar.pemesanantiketpesawat.service.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

@@ -9,5 +9,11 @@ public class TimeRequest {
     private Integer departureDateFk;
     private java.sql.Time departureTime;
     private java.sql.Time arrivalTime;
-    private String longFlight;
 }
+
+
+/*
+
+    LIAT DATA NYA DI CHROME TERNYATA YANG DI CHROME CUMA DURATION DI SURUH GANTI KE MINUTES
+
+ */

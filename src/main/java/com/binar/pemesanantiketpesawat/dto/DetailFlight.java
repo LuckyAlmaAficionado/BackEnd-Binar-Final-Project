@@ -29,7 +29,7 @@ public class DetailFlight {
     private Integer infantPrice;
     private Integer totalPrice;
 
-    public DetailFlight(String departureAirport, Time departureTime, Date departureDate, String arrivalAirport, Time arrivalTime, Date arrivalDate,String longFlight, String airlineName, String airlineCode, Integer checkedBaggage, Integer cabinBaggage, Integer adultPrice, Integer childPrice, Integer infantPrice) {
+    public DetailFlight(String departureAirport, Time departureTime, Date departureDate, String arrivalAirport, Time arrivalTime, Date arrivalDate, String longFlight, String airlineName, String airlineCode, Integer checkedBaggage, Integer cabinBaggage, Integer adultPrice, Integer childPrice, Integer infantPrice) {
         this.departureAirport = departureAirport;
         this.departureTime = departureTime;
         this.departureDate = departureDate;

@@ -7,4 +7,5 @@ public interface AirportRepository extends JpaRepository<Airport, Integer> {
 
     Boolean existsByAirportIATA(String IATAResponse);
 
+    Airport findByAirportLocation(String airportRequest);
 }

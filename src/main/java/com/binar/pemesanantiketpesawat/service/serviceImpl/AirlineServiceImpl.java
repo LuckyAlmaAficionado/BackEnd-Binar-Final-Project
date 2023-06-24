@@ -43,6 +43,8 @@ public class AirlineServiceImpl implements AirlineService {
                         airlineRequest.getAirlineTimeFk(),
                         airlineRequest.getAirlineName(),
                         airlineRequest.getAirlineCode(),
+                        airlineRequest.getDepartureGate(),
+                        airlineRequest.getArrivalGate(),
                         airlineRequest.getFlightClass()
                 )
         );
