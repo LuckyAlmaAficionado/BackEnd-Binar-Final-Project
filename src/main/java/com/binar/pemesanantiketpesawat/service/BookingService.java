@@ -8,5 +8,6 @@ import java.util.List;
 @Component
 public interface BookingService {
     Booking saveDataBooking(Booking bookingRequest);
+    Booking searchBookingByCode(String bookingCodeRequest);
     List<Booking> getAllPesanan();
 }

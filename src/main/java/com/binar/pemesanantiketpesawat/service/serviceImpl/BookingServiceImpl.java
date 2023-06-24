@@ -23,4 +23,9 @@ public class BookingServiceImpl implements BookingService {
     public List<Booking> getAllPesanan() {
         return bookingRepository.findAll();
     }
+
+    @Override
+    public Booking searchBookingByCode(String bookingCodeRequest) {
+        return bookingRepository.findBookingByBookingCode(bookingCodeRequest);
+    }
 }
