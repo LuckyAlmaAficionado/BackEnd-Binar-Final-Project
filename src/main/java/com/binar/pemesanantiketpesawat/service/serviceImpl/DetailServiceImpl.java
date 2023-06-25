@@ -44,10 +44,10 @@ public class DetailServiceImpl implements DetailService {
 
         Schedule scheduleResponse = scheduleRepository.findByTimeId(timeResponse.getDepartureDateFk());
 
-        String tempSeatResponse = seatResponse.get(0).getAirlinePrice();
-        String[] split = tempSeatResponse.split("\\s+");
-        String tempSplit = split[1].replace(".", "");
-        Integer price = Integer.valueOf(tempSplit);
+        Integer price = Integer.valueOf(seatResponse.get(0).getAirlinePrice());
+//        String[] split = tempSeatResponse.split("\\s+");
+//        String tempSplit = split[1].replace(".", "");
+//        Integer price = Integer.valueOf(tempSplit);
 
         int totalAdultPassengers = price * adultsPassenggers;
         int totalChildPassengers = price * childrensPassenggers;

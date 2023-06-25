@@ -29,6 +29,7 @@ public class Schedule {
     private String continentCategory;
     @Column(name = "favorite_flight", nullable = false)
     private Boolean favoriteFlight;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "departure_date", nullable = false)
     private Date departureDate;
     @Column(name = "departure_city", nullable = false)
