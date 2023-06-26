@@ -47,16 +47,9 @@ public class BookingServiceImpl implements BookingService {
 
         Airline airlineResponse = airlineRepository.findByAirlineCode(bookingRequest.getAirlineCode());
 
-        Booking bookingResponse = bookingRepository.findBookingByBookingCode(getRand());
-
-        while(bookingResponse.getBookingCode() != null) {
-            bookingResponse = bookingRepository.findBookingByBookingCode(getRand());
-        }
-
-
         Booking tempBooking = new Booking(
                 0,
-                getRand(),
+                getRand().toUpperCase(),
                 detailResponse.getDepartureAirport(),
                 detailResponse.getDepartureDate(),
                 detailResponse.getDepartureTime(),
