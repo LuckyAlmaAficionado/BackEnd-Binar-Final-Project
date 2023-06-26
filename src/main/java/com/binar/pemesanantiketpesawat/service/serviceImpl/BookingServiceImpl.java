@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -27,6 +28,18 @@ public class BookingServiceImpl implements BookingService {
         return null;
     }
 
+    private String getRand() {
+        String saltChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rand = new Random();
+        while (salt.length() < 6) {
+            int index = (int) (rand.nextFloat() * saltChar.length());
+            salt.append(saltChar.charAt(index));
+        }
+
+        return salt.toString();
+    }
+
     public Booking saveDataBooking(BookingRequest bookingRequest) {
 
 
@@ -34,9 +47,16 @@ public class BookingServiceImpl implements BookingService {
 
         Airline airlineResponse = airlineRepository.findByAirlineCode(bookingRequest.getAirlineCode());
 
+        Booking bookingResponse = bookingRepository.findBookingByBookingCode(getRand());
+
+        while(bookingResponse.getBookingCode() != null) {
+            bookingResponse = bookingRepository.findBookingByBookingCode(getRand());
+        }
+
+
         Booking tempBooking = new Booking(
                 0,
-                "A1342S",
+                getRand(),
                 detailResponse.getDepartureAirport(),
                 detailResponse.getDepartureDate(),
                 detailResponse.getDepartureTime(),
