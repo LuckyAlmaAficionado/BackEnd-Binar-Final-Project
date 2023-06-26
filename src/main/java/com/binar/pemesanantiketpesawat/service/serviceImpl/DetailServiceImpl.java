@@ -63,6 +63,7 @@ public class DetailServiceImpl implements DetailService {
                 scheduleResponse.getDepartureDate(),
                 timeResponse.getLongFlight(),
                 airlineResponse.getAirlineName() + " - " + classResponse,
+                classResponse,
                 codeRequest,
                 seatResponse.get(0).getAirlineBaggage(),
                 seatResponse.get(0).getAirlineCabinBaggage(),
