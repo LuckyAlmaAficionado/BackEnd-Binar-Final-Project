@@ -21,6 +21,7 @@ public class DetailFlight {
     private Date arrivalDate;
     private String longFlight;
     private String airlineName;
+    private String flightClass;
     private String airlineCode;
     private Integer checkedBaggage;
     private Integer cabinBaggage;
