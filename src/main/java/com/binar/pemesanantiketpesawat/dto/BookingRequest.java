@@ -13,6 +13,9 @@ public class BookingRequest {
 
     private String airlineCode;
     private String flightClass;
+    private Integer adult;
+    private Integer child;
+    private Integer baby;
     private Customers customers;
     private List<Passenger> passengers;
 

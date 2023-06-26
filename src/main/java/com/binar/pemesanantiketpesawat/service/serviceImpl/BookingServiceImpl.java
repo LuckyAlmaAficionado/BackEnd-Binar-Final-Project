@@ -4,6 +4,7 @@ import com.binar.pemesanantiketpesawat.dto.BookingRequest;
 import com.binar.pemesanantiketpesawat.dto.DetailFlight;
 import com.binar.pemesanantiketpesawat.model.Airline;
 import com.binar.pemesanantiketpesawat.model.Booking;
+import com.binar.pemesanantiketpesawat.model.STATUS;
 import com.binar.pemesanantiketpesawat.repository.AirlineRepository;
 import com.binar.pemesanantiketpesawat.repository.BookingRepository;
 import com.binar.pemesanantiketpesawat.service.BookingService;
@@ -23,6 +24,7 @@ public class BookingServiceImpl implements BookingService {
     private DetailService detailService;
     @Autowired
     private AirlineRepository airlineRepository;
+    @Autowired
 
     private String getDataForSavingIntoDatabase() {
         return null;
@@ -43,13 +45,14 @@ public class BookingServiceImpl implements BookingService {
     public Booking saveDataBooking(BookingRequest bookingRequest) {
 
 
-        DetailFlight detailResponse = detailService.getDetailPenerbanganByCodeRequestAndClassResponse(bookingRequest.getAirlineCode(), bookingRequest.getFlightClass());
+        DetailFlight detailResponse = detailService.getDetailPenerbangan(bookingRequest.getAirlineCode(), bookingRequest.getFlightClass(), bookingRequest.getAdult(), bookingRequest.getChild(), 0);
 
         Airline airlineResponse = airlineRepository.findByAirlineCode(bookingRequest.getAirlineCode());
 
         Booking tempBooking = new Booking(
                 0,
                 getRand().toUpperCase(),
+                airlineResponse.getAirlineName(),
                 detailResponse.getDepartureAirport(),
                 detailResponse.getDepartureDate(),
                 detailResponse.getDepartureTime(),
@@ -59,8 +62,16 @@ public class BookingServiceImpl implements BookingService {
                 detailResponse.getArrivalTime(),
                 airlineResponse.getArrivalGate(),
                 detailResponse.getLongFlight(),
+                STATUS.UNPAID,
                 bookingRequest.getFlightClass(),
                 bookingRequest.getAirlineCode(),
+                bookingRequest.getAdult(),
+                detailResponse.getAdultPrice(),
+                bookingRequest.getChild(),
+                detailResponse.getChildPrice(),
+                bookingRequest.getBaby(),
+                0,
+                detailResponse.getTotalPrice(),
                 bookingRequest.getCustomers(),
                 bookingRequest.getPassengers()
         );

@@ -23,6 +23,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer bookingId;
     private String bookingCode;
+    private String airlineName;
 
     // departure
     private String departureAirport;
@@ -39,9 +40,20 @@ public class Booking {
     //
     private String longFlight1;
 
-
+    private STATUS statusPayment;
     private String flightClass;
     private String airlineCode;
+
+    // RINCIAN HARGA
+
+    private Integer adultPassenger;
+    private Integer adultPrice;
+    private Integer childPassenger;
+    private Integer childPrice;
+    private Integer babyPassenger;
+    private Integer babyPrice;
+    private Integer price;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_order_id")
     private Customers customers;
