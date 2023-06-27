@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +43,10 @@ public class AuthService {
     @Autowired
     JwtUtils jwtUtils;
 
+    public UUID generateRandomUUID() {
+        return UUID.randomUUID();
+    }
+
     public AuthenticationResponse authenticateUser(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
@@ -57,7 +62,9 @@ public class AuthService {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return new AuthenticationResponse(userDetails.getId(),
+        return new AuthenticationResponse(
+                userDetails.getId(),
+                userDetails.getUuidUser(),
                 userDetails.getEmail(),
                 userDetails.getPassword(),
                 userDetails.getPhoneNumber(),
@@ -77,7 +84,9 @@ public class AuthService {
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getName(),
+        User user = new User(
+                generateRandomUUID(),
+                signUpRequest.getName(),
                 signUpRequest.getEmail(),
                 signUpRequest.getPhoneNumber(),
                 encoder.encode(signUpRequest.getPassword()));

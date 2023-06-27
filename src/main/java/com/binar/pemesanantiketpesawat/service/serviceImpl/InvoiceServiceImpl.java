@@ -11,6 +11,11 @@ import com.binar.pemesanantiketpesawat.service.AirlineService;
 import com.binar.pemesanantiketpesawat.service.InvoiceService;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -77,7 +82,6 @@ public class InvoiceServiceImpl implements InvoiceService {
             Collection<InvoiceModel> invoiceModelsRequest,
             InvoiceModelRequest modelRequest
     ) throws JRException, FileNotFoundException {
-        String savePath = "E:\\code\\.springboot\\.challenge\\pemesanan-tiket-pesawat\\jasper-report\\src\\main\\resources\\static\\invoice.pdf";
 
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(invoiceModelsRequest);
 
@@ -100,8 +104,26 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         File filePath = ResourceUtils.getFile("classpath:FlightInvoice.jrxml");
         JasperReport report = JasperCompileManager.compileReport(filePath.getAbsolutePath());
-        JasperPrint print = JasperFillManager.fillReport(report, param, dataSource);
-        JasperExportManager.exportReportToPdfFile(print, savePath);
-        System.out.println("Report Generator Successfully...!");
+        JasperPrint jasperPrint = JasperFillManager.fillReport(report, param, dataSource);
+
+        JRPdfExporter exporter = new JRPdfExporter();
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("invoice.pdf"));
+
+        SimplePdfReportConfiguration reportConfig
+                = new SimplePdfReportConfiguration();
+        reportConfig.setSizePageToContent(true);
+        reportConfig.setForceLineBreakPolicy(false);
+
+        SimplePdfExporterConfiguration exportConfig
+                = new SimplePdfExporterConfiguration();
+        exportConfig.setMetadataAuthor("baeldung");
+        exportConfig.setEncrypted(true);
+        exportConfig.setAllowedPermissionsHint("PRINTING");
+
+        exporter.setConfiguration(reportConfig);
+        exporter.setConfiguration(exportConfig);
+
+        exporter.exportReport();
     }
 }

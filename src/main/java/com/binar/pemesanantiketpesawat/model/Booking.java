@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -22,6 +23,8 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer bookingId;
+    private UUID uuidUser;
+
     private String bookingCode;
     private String airlineName;
 
@@ -52,7 +55,7 @@ public class Booking {
     private Integer childPrice;
     private Integer babyPassenger;
     private Integer babyPrice;
-    private Integer price;
+    private Integer totalPrice;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_order_id")
