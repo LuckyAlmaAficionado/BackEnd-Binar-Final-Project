@@ -9,12 +9,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+    private UUID uuidUser;
 
     private String name;
 
@@ -29,9 +31,10 @@ public class UserDetailsImpl implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String name, String email, String phoneNumber, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+
+    public UserDetailsImpl(Long id, UUID uuidUser, String name, String email, String phoneNumber, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
+        this.uuidUser = uuidUser;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -46,6 +49,7 @@ public class UserDetailsImpl implements UserDetails {
 
         return new UserDetailsImpl(
                 user.getId(),
+                user.getUuidUser(),
                 user.getName(),
                 user.getEmail(),
                 user.getPhoneNumber(),
@@ -58,6 +62,13 @@ public class UserDetailsImpl implements UserDetails {
         return authorities;
     }
 
+    public UUID getUuidUser() {
+        return uuidUser;
+    }
+
+    public void setUuidUser(UUID uuidUser) {
+        this.uuidUser = uuidUser;
+    }
 
     @Override
     public String getPassword() {

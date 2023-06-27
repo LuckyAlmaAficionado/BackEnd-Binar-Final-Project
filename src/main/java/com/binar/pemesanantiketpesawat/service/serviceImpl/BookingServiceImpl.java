@@ -51,6 +51,7 @@ public class BookingServiceImpl implements BookingService {
 
         Booking tempBooking = new Booking(
                 0,
+                bookingRequest.getUuidUser(),
                 getRand().toUpperCase(),
                 airlineResponse.getAirlineName(),
                 detailResponse.getDepartureAirport(),

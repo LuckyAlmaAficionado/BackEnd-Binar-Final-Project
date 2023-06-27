@@ -3,6 +3,7 @@ package com.binar.pemesanantiketpesawat.model;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users",
@@ -14,6 +15,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private UUID uuidUser;
 
     private String name;
 
@@ -33,11 +36,16 @@ public class User {
     public User() {
     }
 
-    public User(String name, String email,String phoneNumber, String password) {
+    public User(UUID uuidUser, String name, String email, String phoneNumber, String password) {
+        this.uuidUser = uuidUser;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
+    }
+
+    public UUID getUuidUser() {
+        return uuidUser;
     }
 
     public Long getId() {

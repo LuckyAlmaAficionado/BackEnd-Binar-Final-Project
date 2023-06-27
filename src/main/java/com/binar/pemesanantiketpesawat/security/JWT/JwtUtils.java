@@ -1,5 +1,6 @@
 package com.binar.pemesanantiketpesawat.security.JWT;
 
+import com.binar.pemesanantiketpesawat.request.Token;
 import com.binar.pemesanantiketpesawat.security.Service.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -12,6 +13,9 @@ import org.springframework.web.util.WebUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Component
 public class JwtUtils {
@@ -36,7 +40,7 @@ public class JwtUtils {
     }
 
     public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
-        String jwt = generateTokenFromUsername(userPrincipal.getUsername());
+        String jwt = generateTokenFromUsername(userPrincipal.getUsername(), userPrincipal.getUuidUser());
         ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true).build();
         return cookie;
     }
@@ -69,9 +73,10 @@ public class JwtUtils {
         return false;
     }
 
-    public String generateTokenFromUsername(String username) {
+    public String generateTokenFromUsername(String username, UUID uuidUser) {
         return Jwts.builder()
                 .setSubject(username)
+                .setAudience(String.valueOf(uuidUser))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + 1000 * 60 * 24))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)

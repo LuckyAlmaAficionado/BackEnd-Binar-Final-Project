@@ -50,6 +50,8 @@ public class AuthController {
         AuthenticationResponse authenticationResponse = authService.authenticateUser(loginRequest);
 
         token.setToken(authenticationResponse.getJwt());
+        System.out.println(authenticationResponse.getName());
+        token.setUuidUser(authenticationResponse.getUuidUser());
         return crg.successResponse(token);
     }
 
