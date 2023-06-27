@@ -11,17 +11,13 @@ import com.binar.pemesanantiketpesawat.service.AirlineService;
 import com.binar.pemesanantiketpesawat.service.InvoiceService;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
-import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,16 +34,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     private AirportRepository airportRepository;
 
     @Override
-    public void searchBookingCodeByCodeBooking(String codeBookingRequest) throws JRException, FileNotFoundException {
+    public void searchBookingCodeByCodeBooking(HttpServletResponse response, String codeBookingRequest) throws JRException, IOException {
         Booking bookingResponse = bookingRepository.findBookingByBookingCode(codeBookingRequest);
 
         Airline airlineResponse = airlineService.searchByAirlineCode(bookingResponse.getAirlineCode());
 
         Integer baggage = airlineResponse.getFlightClass().get(0).getAirlineBaggage();
 
-        InvoiceModelRequest invoiceTempData = new InvoiceModelRequest(
-                codeBookingRequest,
-                "" + bookingResponse.getDepartureDate(),//
+        InvoiceModelRequest invoiceTempData = new InvoiceModelRequest(codeBookingRequest, "" + bookingResponse.getDepartureDate(),//
                 airlineResponse.getAirlineName(),//
                 airlineResponse.getAirlineCode(),//
                 bookingResponse.getFlightClass(),//
@@ -64,27 +58,16 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         Collection<InvoiceModel> modelCollections = new ArrayList<>();
         for (Passenger passenger : bookingResponse.getPassengers()) {
-            modelCollections.add(new InvoiceModel(
-                    passenger.getTitle(),
-                    passenger.getFullName(),
-                    "dewasa",
-                    codeBookingRequest,
-                    bookingResponse.getAirlineCode(),
-                    "Baggage " + baggage + " Kg"
-            ));
+            modelCollections.add(new InvoiceModel(passenger.getTitle(), passenger.getFullName(), "dewasa", codeBookingRequest, bookingResponse.getAirlineCode(), "Baggage " + baggage + " Kg"));
         }
 
-        jasperReport(modelCollections, invoiceTempData);
+        jasperReport(response, modelCollections, invoiceTempData);
     }
 
 
-    public void jasperReport(
-            Collection<InvoiceModel> invoiceModelsRequest,
-            InvoiceModelRequest modelRequest
-    ) throws JRException, FileNotFoundException {
+    public void jasperReport(HttpServletResponse response, Collection<InvoiceModel> invoiceModelsRequest, InvoiceModelRequest modelRequest) throws JRException, IOException {
 
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(invoiceModelsRequest);
-
 
         Map<String, Object> param = new HashMap<>();
         param.put("bookingCode", modelRequest.getBookingCode());
@@ -92,7 +75,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         param.put("airlineName", modelRequest.getAirlineName());
         param.put("airlineCode", modelRequest.getAirlineCode());
         param.put("flightClass", modelRequest.getFlightClass());
-        param.put("departureTime",modelRequest.getDepartureTime());
+        param.put("departureTime", modelRequest.getDepartureTime());
         param.put("arrivalTime", modelRequest.getArrivalTime());
         param.put("departureAirport", modelRequest.getDepartureAirport());
         param.put("arrivalAirport", modelRequest.getArrivalAirport());
@@ -102,28 +85,14 @@ public class InvoiceServiceImpl implements InvoiceService {
         param.put("arrivalGate", modelRequest.getArrivalGate());
         param.put("longFlight", modelRequest.getLongFlight());
 
-        File filePath = ResourceUtils.getFile("classpath:FlightInvoice.jrxml");
-        JasperReport report = JasperCompileManager.compileReport(filePath.getAbsolutePath());
-        JasperPrint jasperPrint = JasperFillManager.fillReport(report, param, dataSource);
+        InputStream jasperStream = this.getClass().getResourceAsStream("/FlightInvoice.jasper");
 
-        JRPdfExporter exporter = new JRPdfExporter();
-        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("invoice.pdf"));
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperStream);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, param, dataSource);
 
-        SimplePdfReportConfiguration reportConfig
-                = new SimplePdfReportConfiguration();
-        reportConfig.setSizePageToContent(true);
-        reportConfig.setForceLineBreakPolicy(false);
-
-        SimplePdfExporterConfiguration exportConfig
-                = new SimplePdfExporterConfiguration();
-        exportConfig.setMetadataAuthor("baeldung");
-        exportConfig.setEncrypted(true);
-        exportConfig.setAllowedPermissionsHint("PRINTING");
-
-        exporter.setConfiguration(reportConfig);
-        exporter.setConfiguration(exportConfig);
-
-        exporter.exportReport();
+        response.setContentType("application/x-pdf");
+        response.setHeader("Content-disposition", "inline; filename=InvoiceManager.pdf");
+        final ServletOutputStream outputStream = response.getOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
     }
 }

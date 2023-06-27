@@ -24,6 +24,7 @@ public class BookingServiceImpl implements BookingService {
     private DetailService detailService;
     @Autowired
     private AirlineRepository airlineRepository;
+
     @Autowired
 
     private String getDataForSavingIntoDatabase() {
@@ -79,6 +80,7 @@ public class BookingServiceImpl implements BookingService {
 
         return bookingRepository.save(tempBooking);
     }
+
 
     @Override
     public List<Booking> getAllPesanan() {
