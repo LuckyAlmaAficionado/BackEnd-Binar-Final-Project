@@ -28,15 +28,7 @@ public class AirlineServiceImpl implements AirlineService {
     @Override
     public Airline addNewAirline(AirlineRequest airlineRequest) {
 
-        System.out.println(airlineRequest.getAirlineCode());
-
-        Boolean airlineResponse = airlineRepository.existsByAirlineCode(airlineRequest.getAirlineCode());
-
-
-        if (airlineResponse) {
-            System.out.println("masuk sini");
-            return null;
-        }
+        if (airlineRepository.existsByAirlineCode(airlineRequest.getAirlineCode())) return null;
 
         return airlineRepository.save(
                 new Airline(
