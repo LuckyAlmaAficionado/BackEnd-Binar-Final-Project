@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -85,6 +86,11 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Booking> getAllPesanan() {
         return bookingRepository.findAll();
+    }
+
+    @Override
+    public List<Booking> findByUuidUser(UUID uuidRequest) {
+        return bookingRepository.findByUuidUser(uuidRequest);
     }
 
     @Override

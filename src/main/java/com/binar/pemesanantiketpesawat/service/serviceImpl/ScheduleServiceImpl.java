@@ -1,6 +1,8 @@
 package com.binar.pemesanantiketpesawat.service.serviceImpl;
 
+import com.binar.pemesanantiketpesawat.dto.DetailFlight;
 import com.binar.pemesanantiketpesawat.dto.DetailFlightList;
+import com.binar.pemesanantiketpesawat.dto.FavoriteFlightModel;
 import com.binar.pemesanantiketpesawat.dto.ScheduleRequest;
 import com.binar.pemesanantiketpesawat.model.*;
 import com.binar.pemesanantiketpesawat.repository.AirportRepository;
@@ -89,6 +91,41 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduleResponse.setArrivalAirport(scheduleRequest.getArrivalAirport());
             return scheduleResponse;
         }
+    }
+
+    @Override
+    public List<FavoriteFlightModel> findByFavoriteDestination() {
+        List<Schedule> favoriteFlight = scheduleRepository.findByFavoriteFlight(true);
+
+        favoriteFlight.forEach(s -> s.getDepartureCity());
+
+        List<DetailFlightList> detailFlightList = null;
+
+        for (Schedule flightSchedule : favoriteFlight) {
+            for (Time flightTime : flightSchedule.getSchedulesList()) {
+                for (Airline airline : flightTime.getAirlineList()) {
+                    for (Seat seat : airline.getFlightClass()) {
+                        detailFlightList = filterDataSchedule(
+                                flightSchedule.getDepartureDate(),
+                                flightSchedule.getDepartureCity(),
+                                flightSchedule.getArrivalCity(),
+                                seat.getFlightClass()
+                        );
+                    }
+                }
+            }
+        }
+
+        List<FavoriteFlightModel> favoriteFlightModels = detailFlightList.stream()
+                .map(detail -> {
+                    return new FavoriteFlightModel(
+                            detail.getDepartureCity(),
+                            detail.getArrivalCity(),
+                            "https://images.pexels.com/photos/3348363/pexels-photo-3348363.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+                    );
+                }).collect(Collectors.toList());
+
+        return favoriteFlightModels;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.binar.pemesanantiketpesawat.service;
 
 import com.binar.pemesanantiketpesawat.dto.DetailFlightList;
+import com.binar.pemesanantiketpesawat.dto.FavoriteFlightModel;
 import com.binar.pemesanantiketpesawat.dto.ScheduleRequest;
 import com.binar.pemesanantiketpesawat.model.Schedule;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ public interface ScheduleService {
     List<DetailFlightList> filterDataSchedule(Date date, String departure, String arrival, String seat);
     List<DetailFlightList> filterDataPriceDesc(Date departureDate, String departureAirport, String arrivalAirport, String seatClass);
     List<DetailFlightList> filterDataPriceAsc(Date departureDate, String departureAirport, String arrivalAirport, String seatClass);
+    List<FavoriteFlightModel> findByFavoriteDestination();
     Schedule addSchedule(ScheduleRequest scheduleRequest);
     void deleteAllAirplaneTicketSchedule();
     Schedule updateSchedule(Schedule scheduleRequest);

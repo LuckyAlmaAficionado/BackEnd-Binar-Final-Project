@@ -1,6 +1,7 @@
 package com.binar.pemesanantiketpesawat.controller;
 
 import com.binar.pemesanantiketpesawat.dto.DetailFlightList;
+import com.binar.pemesanantiketpesawat.dto.FavoriteFlightModel;
 import com.binar.pemesanantiketpesawat.dto.MessageModel;
 import com.binar.pemesanantiketpesawat.dto.ScheduleRequest;
 import com.binar.pemesanantiketpesawat.model.Schedule;
@@ -18,6 +19,23 @@ import org.springframework.web.bind.annotation.*;
 public class ScheduleController {
 
   @Autowired private ScheduleService scheduleService;
+
+  @GetMapping("/favorite-destination")
+  private ResponseEntity<MessageModel> findByFavoriteDestination() {
+    MessageModel messageModel = new MessageModel();
+    List<FavoriteFlightModel> scheduleResponse = scheduleService.findByFavoriteDestination();
+    if (scheduleResponse == null) {
+      messageModel.setStatus(HttpStatus.NO_CONTENT.value());
+      messageModel.setMessage("no data found");
+      return ResponseEntity.badRequest().body(messageModel);
+    } else {
+      messageModel.setStatus(HttpStatus.OK.value());
+      messageModel.setMessage("managed to get the data");
+      messageModel.setData(scheduleResponse);
+      return ResponseEntity.ok().body(messageModel);
+    }
+  }
+
 
   @GetMapping("/get-all")
   private ResponseEntity<MessageModel> getAllSchedules() {
