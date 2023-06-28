@@ -181,7 +181,7 @@
         </band>
     </columnHeader>
     <detail>
-        <band height="127" splitType="Stretch">
+        <band height="52" splitType="Stretch">
             <textField>
                 <reportElement x="11" y="10" width="40" height="30" uuid="0f01b347-ebc4-4de8-aadc-c29ee3522997"/>
                 <textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
