@@ -20,5 +20,5 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     List<String> findArrivalCityFromDepartureCity(String departureCity);
     @Query(value = "SELECT DISTINCT s.departureCity FROM Schedule s")
     List<String> findAllDepartureCity();
-
+    List<Schedule> findByFavoriteFlight(boolean b);
 }
