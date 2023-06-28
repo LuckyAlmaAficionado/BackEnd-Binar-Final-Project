@@ -16,7 +16,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/booking")
+@RequestMapping("/api/booking")
 public class BookingController {
 
     @Autowired
@@ -25,6 +25,11 @@ public class BookingController {
     @PostMapping
     private Booking addBooking(@RequestBody BookingRequest bookingRequest) {
         return bookingService.saveDataBooking(bookingRequest);
+    }
+
+    @GetMapping
+    private String hellow() {
+        return "hello";
     }
 
     @GetMapping("/search-booking-code")
