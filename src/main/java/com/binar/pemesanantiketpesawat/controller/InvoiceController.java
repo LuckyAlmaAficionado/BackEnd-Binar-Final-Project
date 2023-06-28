@@ -20,7 +20,7 @@ public class InvoiceController {
 
     @GetMapping("/{codeBookingRequest}")
     private void getBookingTicket(HttpServletResponse response, @PathVariable String codeBookingRequest) throws JRException, IOException {
-
+        System.out.println(codeBookingRequest);
         invoiceService.searchBookingCodeByCodeBooking(response, codeBookingRequest);
     }
 

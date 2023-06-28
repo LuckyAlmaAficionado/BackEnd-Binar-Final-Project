@@ -35,6 +35,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public void searchBookingCodeByCodeBooking(HttpServletResponse response, String codeBookingRequest) throws JRException, IOException {
+
+        System.out.println(codeBookingRequest);
+
         Booking bookingResponse = bookingRepository.findBookingByBookingCode(codeBookingRequest);
 
         Airline airlineResponse = airlineService.searchByAirlineCode(bookingResponse.getAirlineCode());
@@ -68,6 +71,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     public void jasperReport(HttpServletResponse response, Collection<InvoiceModel> invoiceModelsRequest, InvoiceModelRequest modelRequest) throws JRException, IOException {
 
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(invoiceModelsRequest);
+
+        System.out.println(modelRequest.getLongFlight());
 
         Map<String, Object> param = new HashMap<>();
         param.put("bookingCode", modelRequest.getBookingCode());
