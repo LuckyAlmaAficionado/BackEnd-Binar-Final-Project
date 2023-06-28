@@ -151,7 +151,7 @@
             <textField>
                 <reportElement x="400" y="24" width="110" height="20" forecolor="#FEDD00" uuid="f46769c6-41f4-46aa-9e14-d9a4b4bdd34d"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                    <font fontName="Arial Black" size="12" isBold="true" isItalic="false"/>
+                    <font fontName="Dialog" size="12" isBold="true" isItalic="false"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$P{bookingCode}]]></textFieldExpression>
             </textField>
