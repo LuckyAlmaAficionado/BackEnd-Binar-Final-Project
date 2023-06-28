@@ -13,9 +13,11 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     private AirportRepository airportRepository;
 
     @Override
-    public void searchBookingCodeByCodeBooking(HttpServletResponse response, String codeBookingRequest) throws JRException, IOException {
+    public JasperPrint generateInvoice(String codeBookingRequest) throws JRException, IOException {
 
         System.out.println(codeBookingRequest);
 
@@ -64,40 +66,29 @@ public class InvoiceServiceImpl implements InvoiceService {
             modelCollections.add(new InvoiceModel(passenger.getTitle(), passenger.getFullName(), "dewasa", codeBookingRequest, bookingResponse.getAirlineCode(), "Baggage " + baggage + " Kg"));
         }
 
-        jasperReport(response, modelCollections, invoiceTempData);
-    }
 
-
-    public void jasperReport(HttpServletResponse response, Collection<InvoiceModel> invoiceModelsRequest, InvoiceModelRequest modelRequest) throws JRException, IOException {
-
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(invoiceModelsRequest);
-
-        System.out.println(modelRequest.getLongFlight());
+        String invoicePath = "classpath:FlightInvoice.jrxml";
+        InputStream reportFile = ResourceUtils.getURL(invoicePath).openStream();
+        JasperReport jasperReport = JasperCompileManager.compileReport(reportFile);
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(modelCollections);
 
         Map<String, Object> param = new HashMap<>();
-        param.put("bookingCode", modelRequest.getBookingCode());
-        param.put("flightDate", modelRequest.getFlightDate());
-        param.put("airlineName", modelRequest.getAirlineName());
-        param.put("airlineCode", modelRequest.getAirlineCode());
-        param.put("flightClass", modelRequest.getFlightClass());
-        param.put("departureTime", modelRequest.getDepartureTime());
-        param.put("arrivalTime", modelRequest.getArrivalTime());
-        param.put("departureAirport", modelRequest.getDepartureAirport());
-        param.put("arrivalAirport", modelRequest.getArrivalAirport());
-        param.put("departureCity", modelRequest.getDepartureCity());
-        param.put("arrivalCity", modelRequest.getArrivalCity());
-        param.put("departureGate", modelRequest.getDepartureGate());
-        param.put("arrivalGate", modelRequest.getArrivalGate());
-        param.put("longFlight", modelRequest.getLongFlight());
+        param.put("bookingCode", invoiceTempData.getBookingCode());
+        param.put("flightDate", invoiceTempData.getFlightDate());
+        param.put("airlineName", invoiceTempData.getAirlineName());
+        param.put("airlineCode", invoiceTempData.getAirlineCode());
+        param.put("flightClass", invoiceTempData.getFlightClass());
+        param.put("departureTime", invoiceTempData.getDepartureTime());
+        param.put("arrivalTime", invoiceTempData.getArrivalTime());
+        param.put("departureAirport", invoiceTempData.getDepartureAirport());
+        param.put("arrivalAirport", invoiceTempData.getArrivalAirport());
+        param.put("departureCity", invoiceTempData.getDepartureCity());
+        param.put("arrivalCity", invoiceTempData.getArrivalCity());
+        param.put("departureGate", invoiceTempData.getDepartureGate());
+        param.put("arrivalGate", invoiceTempData.getArrivalGate());
+        param.put("longFlight", invoiceTempData.getLongFlight());
 
-        InputStream jasperStream = this.getClass().getResourceAsStream("/static/FlightInvoice.jasper");
-
-        JasperReport jasperReport = JasperCompileManager.compileReport(jasperStream);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, param, dataSource);
-
-        response.setContentType("application/x-pdf");
-        response.setHeader("Content-disposition", "inline; filename=InvoiceManager.pdf");
-        final ServletOutputStream outputStream = response.getOutputStream();
-        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+        return jasperPrint;
     }
 }
