@@ -90,7 +90,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         param.put("arrivalGate", modelRequest.getArrivalGate());
         param.put("longFlight", modelRequest.getLongFlight());
 
-        InputStream jasperStream = this.getClass().getResourceAsStream("/FlightInvoice.jasper");
+        InputStream jasperStream = this.getClass().getResourceAsStream("/static/FlightInvoice.jasper");
 
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperStream);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, param, dataSource);
