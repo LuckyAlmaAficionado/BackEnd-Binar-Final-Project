@@ -2,6 +2,7 @@ package com.binar.pemesanantiketpesawat.service.serviceImpl;
 
 import com.binar.pemesanantiketpesawat.dto.AirportRequest;
 import com.binar.pemesanantiketpesawat.model.Airport;
+import com.binar.pemesanantiketpesawat.model.Schedule;
 import com.binar.pemesanantiketpesawat.repository.AirportRepository;
 import com.binar.pemesanantiketpesawat.repository.ScheduleRepository;
 import com.binar.pemesanantiketpesawat.service.AirportService;
@@ -49,7 +50,8 @@ public class AirportServiceImpl implements AirportService {
 
     @Override
     public List<String> getAllAirport() {
-        List<String> countryResponse = scheduleRepository.findAllCountry();
-        return countryResponse;
+        List<String> airportResponse = airportRepository.showAirportLocationOnly();
+        if (airportResponse.isEmpty()) return null;
+        return airportResponse;
     }
 }

@@ -63,6 +63,9 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/api/booking/**", "/api/customers/**", "api/history/**", "/api/passenger/**").authenticated()
+                .antMatchers("/api/v1/airport/add-airport", "/api/v1/airport/get-airport").hasRole("ADMIN")
+                .antMatchers("/api/v1/schedule/add-schedule", "/api/v1/schedule/update-schedule", "/api/v1/schedule/delete-schedule").hasRole("ADMIN")
+                .antMatchers("/api/v1/airline/add-airline", "/api/v1/airline/all-airline").hasRole("ADMIN")
                 .anyRequest().permitAll();
 
         http.authenticationProvider(authenticationProvider());

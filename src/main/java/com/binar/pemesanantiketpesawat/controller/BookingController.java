@@ -27,11 +27,6 @@ public class BookingController {
         return bookingService.saveDataBooking(bookingRequest);
     }
 
-    @GetMapping
-    private String hellow() {
-        return "hello";
-    }
-
     @GetMapping("/search-booking-code")
     private ResponseEntity<MessageModel> getBookingByCodeRequest(@RequestParam("bookingCodeRequest") String bookingCodeRequest) {
         System.out.println("masuk sini ga mas");

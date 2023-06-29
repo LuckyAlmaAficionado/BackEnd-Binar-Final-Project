@@ -3,11 +3,13 @@ package com.binar.pemesanantiketpesawat.security.Service;
 import com.binar.pemesanantiketpesawat.Payload.Request.LoginRequest;
 import com.binar.pemesanantiketpesawat.Payload.Request.SignupRequest;
 import com.binar.pemesanantiketpesawat.Payload.Response.MessageResponse;
+import com.binar.pemesanantiketpesawat.dto.UserRequestUpdate;
 import com.binar.pemesanantiketpesawat.model.ERole;
 import com.binar.pemesanantiketpesawat.model.Role;
 import com.binar.pemesanantiketpesawat.model.User;
 import com.binar.pemesanantiketpesawat.repository.RoleRepository;
 import com.binar.pemesanantiketpesawat.repository.UserRepository;
+import com.binar.pemesanantiketpesawat.request.CommonResponse;
 import com.binar.pemesanantiketpesawat.security.JWT.AuthenticationResponse;
 import com.binar.pemesanantiketpesawat.security.JWT.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +44,19 @@ public class AuthService {
 
     public UUID generateRandomUUID() {
         return UUID.randomUUID();
+    }
+
+    public String updatePersonalData(UserRequestUpdate user) {
+        User userResponse = userRepository.findByUuidUser(user.getUuidUser());
+
+        if (userResponse.getRoles().isEmpty()) throw new IllegalArgumentException("user uuid not found");
+
+        userResponse.setName(user.getName());
+        userResponse.setPhoneNumber(user.getPhoneNumber());
+        userResponse.setPassword(encoder.encode(user.getPassword()));
+
+        userRepository.save(userResponse);
+        return "personal data successfully updated..!";
     }
 
     public AuthenticationResponse authenticateUser(LoginRequest loginRequest) {
