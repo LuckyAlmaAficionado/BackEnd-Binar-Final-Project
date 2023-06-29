@@ -7,8 +7,11 @@ import lombok.Data;
 @AllArgsConstructor
 public class FavoriteFlightModel {
 
-    private String departureCity;
-    private String arrivalCity;
-    private String imageUrl;
+    String category;
+    String rute;
+    String airline;
+    String date;
+    String price;
+    String image;
 
 }

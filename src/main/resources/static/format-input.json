@@ -1,26 +1,56 @@
-{
-  "favoriteFlight": true,
-  "departureDate": "2023-06-18",
-  "departureCity": "Semarang",
-  "arrivalCity": "Banjarmasin",
-  "schedulesList": [
-    {
-      "departureTime": "09:00:00",
-      "arrivalTime": "10:30:00",
-      "airlineList": [
-        {
-          "airlineName": "Garuda Indonesia",
-          "airlineCode": "GA-452",
-          "flightClass": [
-            {
-              "flightClass": "economy",
-              "airlinePrice": "Rp 1.200.000",
-              "airlineBaggage": 20,
-              "airlineCabinBaggage": 7
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+[
+  {
+    id: 1,
+    category: "Asia",
+    rute: "Jakarta -> Bangkok",
+    maskapai: "Air Asia",
+    tanggal: "20 - 30 Maret 2023",
+    harga: "IDR 950.000",
+    Image: ""
+  },
+  {
+    id: 2,
+    category: "Asia",
+    rute: "Jakarta -> Singapore",
+    maskapai: "Garuda Indonesia",
+    tanggal: "10 - 15 April 2023",
+    harga: "IDR 1.200.000",
+    Image: ""
+  },
+  {
+    id: 3,
+    category: "Asia",
+    rute: "Jakarta -> Tokyo",
+    maskapai: "Japan Airlines",
+    tanggal: "5 - 15 Mei 2023",
+    harga: "IDR 2.500.000",
+    Image: ""
+  },
+  {
+    id: 4,
+    category: "Australia",
+    rute: "Jakarta -> Sydney",
+    maskapai: "Qantas",
+    tanggal: "1 - 10 Juni 2023",
+    harga: "IDR 3.000.000",
+    Image: ""
+  },
+  {
+    id: 5,
+    category: "Eropa",
+    rute: "Jakarta -> London",
+    maskapai: "British Airways",
+    tanggal: "15 - 25 Juli 2023",
+    harga: "IDR 4.500.000",
+    Image: ""
+  },
+  {
+    id: 6,
+    category: "Amerika",
+    rute: "Jakarta -> New York",
+    maskapai: "Emirates",
+    tanggal: "10 - 20 Agustus 2023",
+    harga: "IDR 5.800.000",
+    Image: ""
+  }
+]

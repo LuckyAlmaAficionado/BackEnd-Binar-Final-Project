@@ -12,6 +12,7 @@ import java.time.Duration;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DetailFlightList {
+    private String continentCategory;
     private String departureCity;
     private Time departureTime;
     private Date departureDate;
