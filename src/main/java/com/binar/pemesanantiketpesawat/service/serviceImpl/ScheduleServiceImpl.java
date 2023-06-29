@@ -1,6 +1,5 @@
 package com.binar.pemesanantiketpesawat.service.serviceImpl;
 
-import com.binar.pemesanantiketpesawat.dto.DetailFlight;
 import com.binar.pemesanantiketpesawat.dto.DetailFlightList;
 import com.binar.pemesanantiketpesawat.dto.FavoriteFlightModel;
 import com.binar.pemesanantiketpesawat.dto.ScheduleRequest;
@@ -12,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -116,16 +117,21 @@ public class ScheduleServiceImpl implements ScheduleService {
             }
         }
 
-        List<FavoriteFlightModel> favoriteFlightModels = detailFlightList.stream()
+        SimpleDateFormat outputFormat = new SimpleDateFormat("d");
+        SimpleDateFormat outputFormatDateMonthYear = new SimpleDateFormat("d MMMM yyyy");
+
+        return detailFlightList.stream()
                 .map(detail -> {
+                    System.out.println("continentCategory: " + detail.getContinentCategory());
                     return new FavoriteFlightModel(
-                            detail.getDepartureCity(),
-                            detail.getArrivalCity(),
+                            detail.getContinentCategory(),
+                            detail.getDepartureCity() + " -> " + detail.getArrivalCity(),
+                            detail.getAirlineName(),
+                            outputFormat.format(detail.getDepartureDate()) + " - " + outputFormatDateMonthYear.format(detail.getArrivalDate()),
+                            "IDR " + detail.getAirlinePrice(),
                             "https://images.pexels.com/photos/3348363/pexels-photo-3348363.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
                     );
                 }).collect(Collectors.toList());
-
-        return favoriteFlightModels;
     }
 
     @Override
@@ -177,9 +183,9 @@ public class ScheduleServiceImpl implements ScheduleService {
             for (Time time : schedule.getSchedulesList())
                 for (Airline airline : time.getAirlineList()) {
                     for (Seat flightClass : airline.getFlightClass()) {
-
                         tempDetailFlightList.add(
                                 new DetailFlightList(
+                                        schedule.getContinentCategory(),
                                         schedule.getDepartureCity(),
                                         time.getDepartureTime(),
                                         schedule.getDepartureDate(),
@@ -203,10 +209,13 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleResponse.stream()
                 .map(schedule -> new Schedule(
                         schedule.getTimeId(),
+                        schedule.getContinentCategory(),
                         schedule.getFavoriteFlight(),
                         schedule.getDepartureDate(),
                         schedule.getDepartureCity(),
+                        schedule.getDepartureAirport(),
                         schedule.getArrivalCity(),
+                        schedule.getArrivalAirport(),
                         schedule.getSchedulesList().stream()
                                 .map(time -> new Time(
                                         time.getScheduleId(),

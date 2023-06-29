@@ -60,6 +60,18 @@ public class Schedule {
         this.schedulesList = schedulesList;
     }
 
+    public Schedule(Integer timeId, String continentCategory, Boolean favoriteFlight, Date departureDate, String departureCity, String departureAirport, String arrivalCity, String arrivalAirport, List<Time> schedulesList) {
+        this.timeId = timeId;
+        this.continentCategory = continentCategory;
+        this.favoriteFlight = favoriteFlight;
+        this.departureDate = departureDate;
+        this.departureCity = departureCity;
+        this.departureAirport = departureAirport;
+        this.arrivalCity = arrivalCity;
+        this.arrivalAirport = arrivalAirport;
+        this.schedulesList = schedulesList;
+    }
+
     public Schedule(String continentCategory, Boolean favoriteFlight, Date departureDate, String departureCity, String departureAirport, String arrivalCity, String arrivalAirport) {
         this.continentCategory = continentCategory;
         this.favoriteFlight = favoriteFlight;
