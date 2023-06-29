@@ -159,7 +159,7 @@ public class ScheduleController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("delete-schedule")
     public ResponseEntity<MessageModel> deleteAllSchedules() {
         MessageModel messageModel = new MessageModel();
         scheduleService.deleteAllAirplaneTicketSchedule();
@@ -168,7 +168,7 @@ public class ScheduleController {
         return ResponseEntity.ok().body(messageModel);
     }
 
-    @PutMapping
+    @PutMapping("update-schedule")
     public ResponseEntity<MessageModel> updateSchedule(@RequestBody Schedule scheduleRequest) {
         MessageModel messageModel = new MessageModel();
         Schedule scheduleResponse = scheduleService.updateSchedule(scheduleRequest);
