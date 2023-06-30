@@ -11,6 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,7 +43,8 @@ public class Schedule {
     private String arrivalAirport;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "departure_date_fk", referencedColumnName = "time_id", insertable = true, updatable = true)
-    private List<Time> schedulesList;
+    private List<Time> schedulesList = new ArrayList<>(); // Inisialisasi dengan ArrayList kosong
+
     @JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;

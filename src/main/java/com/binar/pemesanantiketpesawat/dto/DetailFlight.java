@@ -46,4 +46,132 @@ public class DetailFlight {
         this.childPrice = childPrice;
         this.infantPrice = infantPrice;
     }
+
+    public String getDepartureAirport() {
+        return departureAirport;
+    }
+
+    public void setDepartureAirport(String departureAirport) {
+        this.departureAirport = departureAirport;
+    }
+
+    public Time getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(Time departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public Date getDepartureDate() {
+        return departureDate;
+    }
+
+    public void setDepartureDate(Date departureDate) {
+        this.departureDate = departureDate;
+    }
+
+    public String getArrivalAirport() {
+        return arrivalAirport;
+    }
+
+    public void setArrivalAirport(String arrivalAirport) {
+        this.arrivalAirport = arrivalAirport;
+    }
+
+    public Time getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(Time arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public Date getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(Date arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
+    public String getLongFlight() {
+        return longFlight;
+    }
+
+    public void setLongFlight(String longFlight) {
+        this.longFlight = longFlight;
+    }
+
+    public String getAirlineName() {
+        return airlineName;
+    }
+
+    public void setAirlineName(String airlineName) {
+        this.airlineName = airlineName;
+    }
+
+    public String getFlightClass() {
+        return flightClass;
+    }
+
+    public void setFlightClass(String flightClass) {
+        this.flightClass = flightClass;
+    }
+
+    public String getAirlineCode() {
+        return airlineCode;
+    }
+
+    public void setAirlineCode(String airlineCode) {
+        this.airlineCode = airlineCode;
+    }
+
+    public Integer getCheckedBaggage() {
+        return checkedBaggage;
+    }
+
+    public void setCheckedBaggage(Integer checkedBaggage) {
+        this.checkedBaggage = checkedBaggage;
+    }
+
+    public Integer getCabinBaggage() {
+        return cabinBaggage;
+    }
+
+    public void setCabinBaggage(Integer cabinBaggage) {
+        this.cabinBaggage = cabinBaggage;
+    }
+
+    public Integer getAdultPrice() {
+        return adultPrice;
+    }
+
+    public void setAdultPrice(Integer adultPrice) {
+        this.adultPrice = adultPrice;
+    }
+
+    public Integer getChildPrice() {
+        return childPrice;
+    }
+
+    public void setChildPrice(Integer childPrice) {
+        this.childPrice = childPrice;
+    }
+
+    public Integer getInfantPrice() {
+        return infantPrice;
+    }
+
+    public void setInfantPrice(Integer infantPrice) {
+        this.infantPrice = infantPrice;
+    }
+
+    public Integer getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Integer totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 }

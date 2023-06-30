@@ -33,5 +33,4 @@ public class InvoiceController {
 
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
-
 }

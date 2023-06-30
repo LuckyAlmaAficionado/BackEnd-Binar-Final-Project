@@ -58,19 +58,6 @@ public class ScheduleServiceImpl implements ScheduleService {
                         findByAirportLocation(scheduleRequest.getArrivalCity())
                 )
         );
-//
-//        airportRepository.findByAirportLocation(scheduleRequest.getArrivalCity());
-//
-//        return scheduleRepository.save(
-//                new Schedule(
-//                        scheduleRequest.getContinentCategory(),
-//                        scheduleRequest.getFavoriteFlight(),
-//                        Date.valueOf(scheduleRequest.getDepartureDate().toString()),
-//                        scheduleRequest.getDepartureCity(),
-//                        findByAirportLocation(scheduleRequest.getDepartureCity()),
-//                        scheduleRequest.getArrivalCity(),
-//                        findByAirportLocation(scheduleRequest.getArrivalCity())
-//                ));
     }
 
     @Override
