@@ -174,6 +174,8 @@ public class ScheduleController {
         Schedule scheduleResponse = scheduleService.updateSchedule(scheduleRequest);
         messageModel.setData(scheduleResponse);
         return ResponseEntity.ok(messageModel);
+    }
+
     @GetMapping("/duration/{departureTime}/{arrivalTime}")
     public String getFlightDuration(@PathVariable String departureTime, @PathVariable String arrivalTime) {
         return scheduleService.calculateFlightDuration(departureTime, arrivalTime);
