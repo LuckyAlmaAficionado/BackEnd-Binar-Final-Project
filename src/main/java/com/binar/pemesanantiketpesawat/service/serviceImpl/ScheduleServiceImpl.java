@@ -45,13 +45,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         return filterDataSearch(scheduleResponse, seat);
     }
 
-<<<<<<< HEAD
     public String findByAirportLocation(String airportLocation) {
         Airport airportResponse = airportRepository.findByAirportLocation(airportLocation);
         return airportResponse.getAirportName();
     }
-=======
->>>>>>> 2b581686cf109d1479b03d57abe80b11c87d7b82
 
     @Override
     public Schedule addSchedule(ScheduleRequest scheduleRequest) {
