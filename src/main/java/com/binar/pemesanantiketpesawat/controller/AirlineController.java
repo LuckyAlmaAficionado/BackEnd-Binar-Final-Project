@@ -5,6 +5,7 @@ import com.binar.pemesanantiketpesawat.dto.AirlineResponse;
 import com.binar.pemesanantiketpesawat.dto.MessageModel;
 import com.binar.pemesanantiketpesawat.model.Airline;
 import com.binar.pemesanantiketpesawat.service.AirlineService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@Slf4j
 @RequestMapping("/api/v1/airline")
 public class AirlineController {
 
@@ -23,18 +25,27 @@ public class AirlineController {
 
     @PostMapping("/add-airline")
     public ResponseEntity<MessageModel> addNewAirline(@RequestBody AirlineRequest airlineRequest) {
+
+        log.info("============= ADD AIRLINE =================");
+
         MessageModel messageModel = new MessageModel();
         Airline airlineResponse = airlineService.addNewAirline(airlineRequest);
         if (airlineResponse == null) {
             messageModel.setStatus(HttpStatus.BAD_REQUEST.value());
+            log.info("Status: FAILED");
             messageModel.setMessage("failed to add airline");
+            log.info("============= END AIRLINE ===============");
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY.value()).body(messageModel);
         } else {
             messageModel.setStatus(HttpStatus.OK.value());
             messageModel.setMessage("success add new airline");
             messageModel.setData(airlineResponse);
+            log.info("Status: SUCCESS");
+            log.info("Data: " + airlineRequest.getAirlineCode());
+            log.info("============= END AIRLINE ===============");
             return ResponseEntity.ok().body(messageModel);
         }
+
     }
 
     @GetMapping("/airlineCode")
