@@ -26,6 +26,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private AirportRepository airportRepository;
 
+    @Autowired
+    public ScheduleServiceImpl(ScheduleRepository scheduleRepository) {
+        this.scheduleRepository = scheduleRepository;
+    }
+
     @Override
     public List<Schedule> getAllSchedules() {
         return scheduleRepository.findAll();
@@ -40,10 +45,13 @@ public class ScheduleServiceImpl implements ScheduleService {
         return filterDataSearch(scheduleResponse, seat);
     }
 
+<<<<<<< HEAD
     public String findByAirportLocation(String airportLocation) {
         Airport airportResponse = airportRepository.findByAirportLocation(airportLocation);
         return airportResponse.getAirportName();
     }
+=======
+>>>>>>> 2b581686cf109d1479b03d57abe80b11c87d7b82
 
     @Override
     public Schedule addSchedule(ScheduleRequest scheduleRequest) {
@@ -223,5 +231,37 @@ public class ScheduleServiceImpl implements ScheduleService {
                                                 .collect(Collectors.toList())
                                 )).collect(Collectors.toList())
                 )).collect(Collectors.toList());
+    }
+
+    @Override
+    public String calculateFlightDuration(String departureTime, String arrivalTime) {
+
+        String[] departureTimeParts = departureTime.split(":");
+        int departureHours = Integer.parseInt(departureTimeParts[0]);
+        int departureMinutes = Integer.parseInt(departureTimeParts[1]);
+
+        String[] arrivalTimeParts = arrivalTime.split(":");
+        int arrivalHours = Integer.parseInt(arrivalTimeParts[0]);
+        int arrivalMinutes = Integer.parseInt(arrivalTimeParts[1]);
+
+        int durationHours;
+        int durationMinutes;
+
+        if (arrivalHours >= departureHours) {
+            durationHours = arrivalHours - departureHours;
+            durationMinutes = arrivalMinutes - departureMinutes;
+        } else {
+            durationHours = (24 - departureHours) + arrivalHours;
+            durationMinutes = arrivalMinutes - departureMinutes;
+        }
+
+        if (durationMinutes < 0) {
+            durationHours -= 1;
+            durationMinutes += 60;
+        }
+
+        String durationString = durationHours + " h " + durationMinutes + " m";
+
+        return durationString;
     }
 }
