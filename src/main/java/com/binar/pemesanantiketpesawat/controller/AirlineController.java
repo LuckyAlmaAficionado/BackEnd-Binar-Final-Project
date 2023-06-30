@@ -63,10 +63,11 @@ public class AirlineController {
                         airline.getAirlineCode()
                 ))
                 .collect(Collectors.toList());
-        if (airlineResponse == null) {
-            messageModel.setStatus(HttpStatus.BAD_REQUEST.value());
+
+        if (airlineResponse.isEmpty()) {
+            messageModel.setStatus(HttpStatus.BAD_GATEWAY.value());
             messageModel.setMessage("failed to get all airline");
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY.value()).body(messageModel);
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(messageModel);
         } else {
             messageModel.setStatus(HttpStatus.OK.value());
             messageModel.setMessage("success get all airline");
