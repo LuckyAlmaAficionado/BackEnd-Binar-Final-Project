@@ -37,14 +37,16 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public List<Passenger> getAllPenumpang() {
-
-        boolean penumpangExists = passengerRepository.findAll().isEmpty();
+        List<Passenger> passengerList = passengerRepository.findAll();
 
         // melakukan pengecekan apakah ada data penumpang
-        if (penumpangExists) throw new PassengerException("tidak ada penumpang yang terdaftar!");
+        if (passengerList.isEmpty()) {
+            throw new PassengerException("tidak ada penumpang yang terdaftar!");
+        }
 
-        return passengerRepository.findAll();
+        return passengerList;
     }
+
 
     @Override
     public Passenger findByIdPenumpang(Integer passenger_id) {

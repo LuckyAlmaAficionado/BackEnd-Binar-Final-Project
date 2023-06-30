@@ -23,7 +23,7 @@ public class ScheduleController {
     private ScheduleService scheduleService;
 
     @GetMapping("/favorite-destination")
-    private ResponseEntity<MessageModel> findByFavoriteDestination() {
+    ResponseEntity<MessageModel> findByFavoriteDestination() {
         MessageModel messageModel = new MessageModel();
         List<FavoriteFlightModel> scheduleResponse = scheduleService.findByFavoriteDestination();
         if (scheduleResponse == null) {
@@ -174,5 +174,8 @@ public class ScheduleController {
         Schedule scheduleResponse = scheduleService.updateSchedule(scheduleRequest);
         messageModel.setData(scheduleResponse);
         return ResponseEntity.ok(messageModel);
+    @GetMapping("/duration/{departureTime}/{arrivalTime}")
+    public String getFlightDuration(@PathVariable String departureTime, @PathVariable String arrivalTime) {
+        return scheduleService.calculateFlightDuration(departureTime, arrivalTime);
     }
 }

@@ -27,4 +27,9 @@ public class Airport {
     private String airportIATA;
     @Column(name = "airport_name", nullable = false)
     private String airportName;
+
+    public Airport(String airportIATA, String airportName) {
+        this.airportIATA = airportIATA;
+        this.airportName = airportName;
+    }
 }

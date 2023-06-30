@@ -22,27 +22,32 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
+    public BookingController(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
+
     @PostMapping
-    private Booking addBooking(@RequestBody BookingRequest bookingRequest) {
+    Booking addBooking(@RequestBody BookingRequest bookingRequest) {
         return bookingService.saveDataBooking(bookingRequest);
     }
 
     @GetMapping("/search-booking-code")
-    private ResponseEntity<MessageModel> getBookingByCodeRequest(@RequestParam("bookingCodeRequest") String bookingCodeRequest) {
-        System.out.println("masuk sini ga mas");
+    ResponseEntity<MessageModel> getBookingByCodeRequest(@RequestParam("bookingCodeRequest") String bookingCodeRequest) {
         Booking bookingResponse = bookingService.searchBookingByCode(bookingCodeRequest);
-        MessageModel messageModel = new MessageModel();
+        MessageModel<Booking> messageModel = new MessageModel<>();
+
         if (bookingResponse == null) {
             messageModel.setStatus(HttpStatus.NO_CONTENT.value());
             messageModel.setMessage("no data found");
-            return ResponseEntity.badRequest().body(messageModel);
-        }else {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(messageModel);
+        } else {
             messageModel.setStatus(HttpStatus.OK.value());
             messageModel.setMessage("managed to get the data");
             messageModel.setData(bookingResponse);
-            return ResponseEntity.ok().body(messageModel);
+            return ResponseEntity.ok(messageModel);
         }
     }
+
 
     @GetMapping("/getDataPemesan")
     public List<Booking> getDataPemesan() {
