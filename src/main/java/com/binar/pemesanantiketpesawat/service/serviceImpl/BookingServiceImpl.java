@@ -4,11 +4,13 @@ import com.binar.pemesanantiketpesawat.dto.BookingRequest;
 import com.binar.pemesanantiketpesawat.dto.DetailFlight;
 import com.binar.pemesanantiketpesawat.model.Airline;
 import com.binar.pemesanantiketpesawat.model.Booking;
+import com.binar.pemesanantiketpesawat.model.NotificationMessage;
 import com.binar.pemesanantiketpesawat.model.STATUS;
 import com.binar.pemesanantiketpesawat.repository.AirlineRepository;
 import com.binar.pemesanantiketpesawat.repository.BookingRepository;
 import com.binar.pemesanantiketpesawat.service.BookingService;
 import com.binar.pemesanantiketpesawat.service.DetailService;
+import com.binar.pemesanantiketpesawat.service.FirebaseMessagingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ public class BookingServiceImpl implements BookingService {
     private DetailService detailService;
     @Autowired
     private AirlineRepository airlineRepository;
+    @Autowired
+    private FirebaseMessagingService firebaseMessagingService;
 
     @Autowired
 
@@ -51,10 +55,12 @@ public class BookingServiceImpl implements BookingService {
 
         Airline airlineResponse = airlineRepository.findByAirlineCode(bookingRequest.getAirlineCode());
 
+        String codeBooking = getRand().toUpperCase();
+
         Booking tempBooking = new Booking(
                 0,
                 bookingRequest.getUuidUser(),
-                getRand().toUpperCase(),
+                codeBooking,
                 airlineResponse.getAirlineName(),
                 detailResponse.getDepartureAirport(),
                 detailResponse.getDepartureDate(),
@@ -78,6 +84,18 @@ public class BookingServiceImpl implements BookingService {
                 bookingRequest.getCustomers(),
                 bookingRequest.getPassengers()
         );
+
+
+        NotificationMessage notificationMessage = new NotificationMessage(
+                0,
+                bookingRequest.getUuidUser(),
+                "e4WW1J1RPp8BHIKjSP-djz:APA91bFZzEzQt41YhM7-INV-4Ssv0x1et_FoKhyE2Pr9VQCP8DrYXdVVQKQ4yIAKEFdy-YmkCcS0E5RHBwyIob4ZaPcFCmeBKGHf90LfVEU8yqi6ZJYN6WRlLpydsXubf2JD3iAhB5dk",
+                "Booking",
+                "Anda memiliki penerbangan dengan token " + codeBooking + " jangan lupa yaa",
+                "https://www.seiu1000.org/sites/main/files/main-images/camera_lense_0.jpeg"
+        );
+
+        String tokenResponse = firebaseMessagingService.sendNotificationByToken(notificationMessage);
 
         return bookingRepository.save(tempBooking);
     }
