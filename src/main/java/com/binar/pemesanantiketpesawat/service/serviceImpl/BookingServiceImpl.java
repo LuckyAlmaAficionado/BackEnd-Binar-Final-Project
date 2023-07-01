@@ -89,7 +89,7 @@ public class BookingServiceImpl implements BookingService {
         NotificationMessage notificationMessage = new NotificationMessage(
                 0,
                 bookingRequest.getUuidUser(),
-                bookingRequest.getToken(),
+                bookingRequest.getTokenFirebase(),
                 "Booking",
                 "Anda memiliki penerbangan dengan token " + codeBooking + " jangan lupa yaa..!",
                 "https://www.seiu1000.org/sites/main/files/main-images/camera_lense_0.jpeg"
