@@ -6,6 +6,8 @@ import com.binar.pemesanantiketpesawat.dto.MessageModel;
 import com.binar.pemesanantiketpesawat.dto.ScheduleRequest;
 import com.binar.pemesanantiketpesawat.model.Schedule;
 import com.binar.pemesanantiketpesawat.service.ScheduleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/schedule")
 public class ScheduleController {
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleController.class);
 
     @Autowired
     private ScheduleService scheduleService;
@@ -28,15 +31,16 @@ public class ScheduleController {
         if (scheduleResponse == null) {
             messageModel.setStatus(HttpStatus.NO_CONTENT.value());
             messageModel.setMessage("no data found");
+            logger.warn("No data found for favorite destinations");
             return ResponseEntity.badRequest().body(messageModel);
         } else {
             messageModel.setStatus(HttpStatus.OK.value());
             messageModel.setMessage("managed to get the data");
             messageModel.setData(scheduleResponse);
+            logger.info("Successfully retrieved favorite destinations");
             return ResponseEntity.ok().body(messageModel);
         }
     }
-
 
     @GetMapping("/get-all")
     private ResponseEntity<MessageModel> getAllSchedules() {
@@ -46,10 +50,12 @@ public class ScheduleController {
             messageModel.setMessage("Success get all schedules");
             messageModel.setStatus(HttpStatus.OK.value());
             messageModel.setData(schedulesResponse);
+            logger.info("Successfully retrieved all schedules");
             return ResponseEntity.ok().body(messageModel);
         } catch (Exception e) {
             messageModel.setMessage("Failed get schedules");
             messageModel.setStatus(HttpStatus.BAD_REQUEST.value());
+            logger.error("Failed to retrieve schedules", e);
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY.value()).body(messageModel);
         }
     }
@@ -68,10 +74,12 @@ public class ScheduleController {
             messageModel.setMessage("Success get schedule");
             messageModel.setStatus(HttpStatus.OK.value());
             messageModel.setData(scheduleResponse);
+            logger.info("Successfully retrieved airplane ticket schedule");
             return ResponseEntity.ok().body(messageModel);
         } catch (Exception exception) {
             messageModel.setMessage("Failed get schedule");
             messageModel.setStatus(HttpStatus.BAD_GATEWAY.value());
+            logger.error("Failed to retrieve airplane ticket schedule", exception);
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY.value()).body(messageModel);
         }
     }
@@ -90,10 +98,12 @@ public class ScheduleController {
             messageModel.setMessage("Success get schedule");
             messageModel.setStatus(HttpStatus.OK.value());
             messageModel.setData(scheduleResponse);
+            logger.info("Successfully retrieved airplane ticket schedule with price ascending order");
             return ResponseEntity.ok().body(messageModel);
         } catch (Exception e) {
             messageModel.setMessage("Failed get schedule");
             messageModel.setStatus(HttpStatus.BAD_GATEWAY.value());
+            logger.error("Failed to retrieve airplane ticket schedule with price ascending order", e);
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY.value()).body(messageModel);
         }
     }
@@ -112,10 +122,12 @@ public class ScheduleController {
             messageModel.setMessage("Success get schedule");
             messageModel.setStatus(HttpStatus.OK.value());
             messageModel.setData(scheduleResponse);
+            logger.info("Successfully retrieved airplane ticket schedule with price descending order");
             return ResponseEntity.ok().body(messageModel);
         } catch (Exception e) {
             messageModel.setMessage("Failed get schedule");
             messageModel.setStatus(HttpStatus.BAD_GATEWAY.value());
+            logger.error("Failed to retrieve airplane ticket schedule with price descending order", e);
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY.value()).body(messageModel);
         }
     }
@@ -134,10 +146,12 @@ public class ScheduleController {
             messageModel.setMessage("Success get schedule");
             messageModel.setStatus(HttpStatus.OK.value());
             messageModel.setData(scheduleResponse);
+            logger.info("Successfully retrieved airplane ticket schedule with detailed flight information");
             return ResponseEntity.ok().body(messageModel);
         } catch (Exception exception) {
             messageModel.setMessage("Failed get schedule");
             messageModel.setStatus(HttpStatus.BAD_GATEWAY.value());
+            logger.error("Failed to retrieve airplane ticket schedule with detailed flight information", exception);
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY.value()).body(messageModel);
         }
     }
@@ -149,11 +163,13 @@ public class ScheduleController {
         if (scheduleResponse == null) {
             messageModel.setStatus(HttpStatus.BAD_REQUEST.value());
             messageModel.setMessage("Failed to add schedule");
+            logger.error("Failed to add new schedule");
             return ResponseEntity.badRequest().body(messageModel);
         } else {
             messageModel.setStatus(HttpStatus.OK.value());
             messageModel.setMessage("Add new schedule");
             messageModel.setData(scheduleResponse);
+            logger.info("Successfully added new schedule");
             return ResponseEntity.ok().body(messageModel);
         }
     }
@@ -164,6 +180,7 @@ public class ScheduleController {
         scheduleService.deleteAllAirplaneTicketSchedule();
         messageModel.setStatus(HttpStatus.OK.value());
         messageModel.setMessage("Successfully delete all data...");
+        logger.info("Successfully deleted all schedules");
         return ResponseEntity.ok().body(messageModel);
     }
 
@@ -172,6 +189,7 @@ public class ScheduleController {
         MessageModel messageModel = new MessageModel();
         Schedule scheduleResponse = scheduleService.updateSchedule(scheduleRequest);
         messageModel.setData(scheduleResponse);
+        logger.info("Successfully updated schedule");
         return ResponseEntity.ok(messageModel);
     }
 

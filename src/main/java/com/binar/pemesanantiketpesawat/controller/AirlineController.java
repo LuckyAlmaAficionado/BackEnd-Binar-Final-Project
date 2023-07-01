@@ -25,41 +25,48 @@ public class AirlineController {
 
     @PostMapping("/add-airline")
     public ResponseEntity<MessageModel> addNewAirline(@RequestBody AirlineRequest airlineRequest) {
-
+        log.info("Received request to add new airline");
 
         MessageModel messageModel = new MessageModel();
         Airline airlineResponse = airlineService.addNewAirline(airlineRequest);
         if (airlineResponse == null) {
             messageModel.setStatus(HttpStatus.BAD_GATEWAY.value());
-            messageModel.setMessage("failed to add new airline");
+            messageModel.setMessage("Failed to add new airline");
+            log.error("Failed to add new airline");
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY.value()).body(messageModel);
         } else {
             messageModel.setStatus(HttpStatus.OK.value());
-            messageModel.setMessage("success add new airline");
+            messageModel.setMessage("Successfully added new airline");
             messageModel.setData(airlineResponse);
+            log.info("Successfully added new airline");
             return ResponseEntity.ok().body(messageModel);
         }
-
     }
 
     @GetMapping("/airlineCode")
     public ResponseEntity<MessageModel> searchByAirlineCode(@RequestParam String codeRequest) {
+        log.info("Received request to get airline by code: {}", codeRequest);
+
         MessageModel messageModel = new MessageModel();
         Airline airlineResponse = airlineService.searchByAirlineCode(codeRequest);
         if (airlineResponse == null) {
             messageModel.setStatus(HttpStatus.BAD_REQUEST.value());
-            messageModel.setMessage("failed get airline by code " + codeRequest);
+            messageModel.setMessage("Failed to get airline by code " + codeRequest);
+            log.error("Failed to get airline by code: {}", codeRequest);
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY.value()).body(messageModel);
         } else {
             messageModel.setStatus(HttpStatus.OK.value());
-            messageModel.setMessage("success get airline by code " + codeRequest);
+            messageModel.setMessage("Successfully got airline by code " + codeRequest);
             messageModel.setData(airlineResponse);
+            log.info("Successfully got airline by code: {}", codeRequest);
             return ResponseEntity.ok().body(messageModel);
         }
     }
 
     @GetMapping("/all-airline")
     public ResponseEntity<MessageModel> getAllAirline() {
+        log.info("Received request to get all airlines");
+
         MessageModel messageModel = new MessageModel();
         List<AirlineResponse> airlineResponse = airlineService.getAllAirline().stream()
                 .map(airline -> new AirlineResponse(
@@ -71,12 +78,14 @@ public class AirlineController {
 
         if (airlineResponse.isEmpty()) {
             messageModel.setStatus(HttpStatus.BAD_GATEWAY.value());
-            messageModel.setMessage("failed to get all airline");
+            messageModel.setMessage("Failed to get all airlines");
+            log.error("Failed to get all airlines");
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(messageModel);
         } else {
             messageModel.setStatus(HttpStatus.OK.value());
-            messageModel.setMessage("success get all airline");
+            messageModel.setMessage("Successfully got all airlines");
             messageModel.setData(airlineResponse);
+            log.info("Successfully got all airlines");
             return ResponseEntity.ok().body(messageModel);
         }
     }
