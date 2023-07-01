@@ -30,6 +30,8 @@ public class FirebaseMessagingService {
 
     public String sendNotificationByToken(NotificationMessage notificationMessage) {
 
+        System.out.println("MASUK SINI");
+
         repository.save(new NotificationMessage(
                 0,
                 notificationMessage.getUuidUser(),
