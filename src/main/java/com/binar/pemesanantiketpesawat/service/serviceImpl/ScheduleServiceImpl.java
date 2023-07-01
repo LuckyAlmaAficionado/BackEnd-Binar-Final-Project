@@ -38,10 +38,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public List<Schedule> searchAirplaneTicketSchedule(
-            Date date, String departure, String arrival, String seat) {
-        List<Schedule> scheduleResponse =
-                scheduleRepository.findByDepartureDateAndDepartureCityAndArrivalCity(
-                        date, departure, arrival);
+            Date date, String departure, String arrival, String seat
+    ) {
+        List<Schedule> scheduleResponse = scheduleRepository.findByDepartureDateAndDepartureCityAndArrivalCity(date, departure, arrival);
+        System.out.println("size schedule: " + scheduleResponse.size());
         return filterDataSearch(scheduleResponse, seat);
     }
 
@@ -72,7 +72,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public Schedule updateSchedule(Schedule scheduleRequest) {
-        Schedule scheduleResponse = scheduleRepository.findByTimeId(scheduleRequest.getTimeId());
+        Schedule scheduleResponse = scheduleRepository.findByScheduleId(scheduleRequest.getScheduleId());
         if (scheduleResponse == null) return null;
         else {
             scheduleResponse.setContinentCategory(scheduleRequest.getContinentCategory());
@@ -170,11 +170,11 @@ public class ScheduleServiceImpl implements ScheduleService {
                 filterDataSearch(searchAirplaneTicketSchedule(date, departure, arrival, seat), seat);
 
         List<DetailFlightList> tempDetailFlightList = new ArrayList<>();
-
         for (Schedule schedule : scheduleResponse)
             for (Time time : schedule.getSchedulesList())
                 for (Airline airline : time.getAirlineList()) {
                     for (Seat flightClass : airline.getFlightClass()) {
+
                         tempDetailFlightList.add(
                                 new DetailFlightList(
                                         schedule.getContinentCategory(),
@@ -183,7 +183,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                                         schedule.getDepartureDate(),
                                         schedule.getArrivalCity(),
                                         time.getArrivalTime(),
-                                        Duration.between(time.getDepartureTime().toLocalTime(), time.getArrivalTime().toLocalTime()),
+                                        flightDuration(time.getDepartureTime(), time.getArrivalTime()),
                                         schedule.getDepartureDate(),
                                         airline.getAirlineName(),
                                         airline.getAirlineCode(),
@@ -197,10 +197,15 @@ public class ScheduleServiceImpl implements ScheduleService {
         return tempDetailFlightList;
     }
 
+    public String flightDuration(java.sql.Time departureTime, java.sql.Time arrivalTime) {
+        Duration duration= Duration.between(departureTime.toLocalTime(), arrivalTime.toLocalTime());
+        return duration.toHours() + " Hours " + duration.toMinutesPart() + " Minutes";
+    }
+
     public List<Schedule> filterDataSearch(List<Schedule> scheduleResponse, String seat) {
         return scheduleResponse.stream()
                 .map(schedule -> new Schedule(
-                        schedule.getTimeId(),
+                        schedule.getScheduleId(),
                         schedule.getContinentCategory(),
                         schedule.getFavoriteFlight(),
                         schedule.getDepartureDate(),
@@ -210,7 +215,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                         schedule.getArrivalAirport(),
                         schedule.getSchedulesList().stream()
                                 .map(time -> new Time(
-                                        time.getScheduleId(),
+                                        time.getTimeId(),
                                         time.getDepartureDateFk(),
                                         time.getDepartureTime(),
                                         time.getArrivalTime(),
