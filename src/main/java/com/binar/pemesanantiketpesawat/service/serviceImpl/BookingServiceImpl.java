@@ -92,7 +92,7 @@ public class BookingServiceImpl implements BookingService {
                 bookingRequest.getTokenFirebase(),
                 "Booking",
                 "Anda memiliki penerbangan dengan token " + codeBooking + " jangan lupa yaa..!",
-                "https://www.seiu1000.org/sites/main/files/main-images/camera_lense_0.jpeg"
+                "http://mahasiswa.dinus.ac.id/images/foto/A/A11/2020/A11.2020.12797.jpg"
         );
 
         String tokenResponse = firebaseMessagingService.sendNotificationByToken(notificationMessage);
