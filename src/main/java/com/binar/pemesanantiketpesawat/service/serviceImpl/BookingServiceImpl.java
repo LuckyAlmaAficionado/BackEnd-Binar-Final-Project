@@ -89,9 +89,9 @@ public class BookingServiceImpl implements BookingService {
         NotificationMessage notificationMessage = new NotificationMessage(
                 0,
                 bookingRequest.getUuidUser(),
-                "e4WW1J1RPp8BHIKjSP-djz:APA91bFZzEzQt41YhM7-INV-4Ssv0x1et_FoKhyE2Pr9VQCP8DrYXdVVQKQ4yIAKEFdy-YmkCcS0E5RHBwyIob4ZaPcFCmeBKGHf90LfVEU8yqi6ZJYN6WRlLpydsXubf2JD3iAhB5dk",
+                bookingRequest.getToken(),
                 "Booking",
-                "Anda memiliki penerbangan dengan token " + codeBooking + " jangan lupa yaa",
+                "Anda memiliki penerbangan dengan token " + codeBooking + " jangan lupa yaa..!",
                 "https://www.seiu1000.org/sites/main/files/main-images/camera_lense_0.jpeg"
         );
 
