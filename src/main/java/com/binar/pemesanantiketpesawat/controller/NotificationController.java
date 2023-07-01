@@ -26,7 +26,7 @@ public class NotificationController {
     }
 
     @GetMapping
-    private List<NotificationMessage> getNotificationByUUID(@RequestParam UUID uuidRequest) {
+    private List<NotificationMessage> getNotificationByUUID(@RequestParam String token, @RequestParam UUID uuidRequest) {
         log.info("Notification sent successfully");
         return firebaseMessagingService.getByUUID(uuidRequest);
     }
