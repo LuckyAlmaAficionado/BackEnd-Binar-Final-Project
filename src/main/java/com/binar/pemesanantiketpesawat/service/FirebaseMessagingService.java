@@ -20,13 +20,24 @@ public class FirebaseMessagingService {
     private FirebaseMessaging firebaseMessaging;
 
     @Autowired
-    private NotificationMessageRepository notificationMessage;
+    private NotificationMessageRepository repository;
 
     public List<NotificationMessage> getByUUID(UUID uuidRequest) {
-        return notificationMessage.findByUuidUser(uuidRequest);
-    };
+        return repository.findByUuidUser(uuidRequest);
+    }
+
+    ;
 
     public String sendNotificationByToken(NotificationMessage notificationMessage) {
+
+        repository.save(new NotificationMessage(
+                0,
+                notificationMessage.getUuidUser(),
+                notificationMessage.getRecipientToken(),
+                notificationMessage.getTitle(),
+                notificationMessage.getBody(),
+                notificationMessage.getImage()
+        ));
 
         Notification notification = Notification.builder()
                 .setTitle(notificationMessage.getTitle())
