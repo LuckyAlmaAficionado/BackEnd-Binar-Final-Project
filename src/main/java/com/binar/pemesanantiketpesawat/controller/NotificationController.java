@@ -2,6 +2,7 @@ package com.binar.pemesanantiketpesawat.controller;
 
 import com.binar.pemesanantiketpesawat.model.NotificationMessage;
 import com.binar.pemesanantiketpesawat.service.FirebaseMessagingService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +22,12 @@ public class NotificationController {
     @PostMapping
     public String sendNotificationByToken(@RequestBody NotificationMessage notificationMessage) {
         log.info("Received request to send notification with title: '{}' and body: '{}'", notificationMessage.getTitle(), notificationMessage.getBody());
-
-        String result = firebaseMessagingService.sendNotificationByToken(notificationMessage);
-
+        return  firebaseMessagingService.sendNotificationByToken(notificationMessage);
+    }
 
     @GetMapping
     private List<NotificationMessage> getNotificationByUUID(@RequestParam UUID uuidRequest) {
-        return firebaseMessagingService.getByUUID(uuidRequest);
-
         log.info("Notification sent successfully");
-
-        return result;
+        return firebaseMessagingService.getByUUID(uuidRequest);
     }
 }
