@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @Slf4j
@@ -22,69 +23,81 @@ public class AirportController {
 
     @GetMapping("/get-airport")
     public ResponseEntity<MessageModel> getAllAirport() {
+        log.info("Received request to get all airports");
+
         MessageModel messageModel = new MessageModel();
         List<String> airportResponse = airportService.getAllAirport();
         if (airportResponse == null) {
             messageModel.setStatus(HttpStatus.BAD_REQUEST.value());
-            messageModel.setMessage("Failed to get airport");
+            messageModel.setMessage("Failed to get airports");
+            log.error("Failed to get airports");
             return ResponseEntity.badRequest().body(messageModel);
         } else {
             messageModel.setStatus(HttpStatus.OK.value());
-            messageModel.setMessage("Success to get airport");
+            messageModel.setMessage("Successfully got airports");
             messageModel.setData(airportResponse);
+            log.info("Successfully got all airports");
             return ResponseEntity.ok().body(messageModel);
         }
     }
 
     @GetMapping("/getDepartureAirport")
     public ResponseEntity<MessageModel> getDepartureAirport() {
+        log.info("Received request to get departure airports");
+
         MessageModel messageModel = new MessageModel();
         List<String> airportResponse = airportService.getDepartureAirport();
         if (airportResponse == null) {
             messageModel.setStatus(HttpStatus.NO_CONTENT.value());
-            messageModel.setMessage("Failed to get airport");
+            messageModel.setMessage("Failed to get departure airports");
+            log.error("Failed to get departure airports");
             return ResponseEntity.noContent().build();
         } else {
             messageModel.setStatus(HttpStatus.OK.value());
-            messageModel.setMessage("Success to get airport");
+            messageModel.setMessage("Successfully got departure airports");
             messageModel.setData(airportResponse);
+            log.info("Successfully got departure airports");
             return ResponseEntity.ok().body(messageModel);
         }
     }
 
     @GetMapping("/getArrivalAirport")
-    public ResponseEntity<MessageModel> getDepartureAirport(@RequestParam String departureRequest) {
+    public ResponseEntity<MessageModel> getArrivalAirport(@RequestParam String departureRequest) {
+        log.info("Received request to get arrival airports for departure airport: {}", departureRequest);
+
         MessageModel messageModel = new MessageModel();
         List<String> airportResponse = airportService.getArrivalAirportFromDeparture(departureRequest);
         if (airportResponse == null) {
             messageModel.setStatus(HttpStatus.NO_CONTENT.value());
-            messageModel.setMessage("Failed to get airport");
+            messageModel.setMessage("Failed to get arrival airports");
+            log.error("Failed to get arrival airports");
             return ResponseEntity.noContent().build();
         } else {
             messageModel.setStatus(HttpStatus.OK.value());
-            messageModel.setMessage("Success to get airport");
+            messageModel.setMessage("Successfully got arrival airports");
             messageModel.setData(airportResponse);
+            log.info("Successfully got arrival airports");
             return ResponseEntity.ok().body(messageModel);
         }
     }
 
     @PostMapping("/add-airport")
     public ResponseEntity<MessageModel> addNewAirport(@RequestBody AirportRequest airportRequest) {
-        log.info("========= ADD AIRPORT =========");
+        log.info("Received request to add new airport");
+
         MessageModel messageModel = new MessageModel();
         Airport airportResponse = airportService.addNewAirport(airportRequest);
         if (airportResponse == null) {
             messageModel.setStatus(HttpStatus.BAD_REQUEST.value());
-            messageModel.setMessage("Failed to add airport");
-            log.info("Status: Failed");
+            messageModel.setMessage("Failed to add new airport");
+            log.error("Failed to add new airport");
             return ResponseEntity.badRequest().body(messageModel);
         } else {
             messageModel.setStatus(HttpStatus.OK.value());
-            messageModel.setMessage("Add new airport");
+            messageModel.setMessage("Successfully added new airport");
             messageModel.setData(airportResponse);
-            log.info("Status: Success");
-            log.info("Data: " + airportResponse.getAirportIATA());
-            log.info("========= END AIRPORT =========");
+            log.info("Successfully added new airport");
+            log.info("Airport IATA: {}", airportResponse.getAirportIATA());
             return ResponseEntity.ok().body(messageModel);
         }
     }
