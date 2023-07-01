@@ -26,23 +26,17 @@ public class AirlineController {
     @PostMapping("/add-airline")
     public ResponseEntity<MessageModel> addNewAirline(@RequestBody AirlineRequest airlineRequest) {
 
-        log.info("============= ADD AIRLINE =================");
 
         MessageModel messageModel = new MessageModel();
         Airline airlineResponse = airlineService.addNewAirline(airlineRequest);
         if (airlineResponse == null) {
-            messageModel.setStatus(HttpStatus.BAD_REQUEST.value());
-            log.info("Status: FAILED");
-            messageModel.setMessage("failed to add airline");
-            log.info("============= END AIRLINE ===============");
+            messageModel.setStatus(HttpStatus.BAD_GATEWAY.value());
+            messageModel.setMessage("failed to add new airline");
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY.value()).body(messageModel);
         } else {
             messageModel.setStatus(HttpStatus.OK.value());
             messageModel.setMessage("success add new airline");
             messageModel.setData(airlineResponse);
-            log.info("Status: SUCCESS");
-            log.info("Data: " + airlineRequest.getAirlineCode());
-            log.info("============= END AIRLINE ===============");
             return ResponseEntity.ok().body(messageModel);
         }
 
