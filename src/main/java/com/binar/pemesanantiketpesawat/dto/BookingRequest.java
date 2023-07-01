@@ -13,7 +13,7 @@ import java.util.UUID;
 public class BookingRequest {
 
     private UUID uuidUser;
-    private String token;
+    private String tokenFirebase;
     private String airlineCode;
     private String flightClass;
     private Integer adult;
