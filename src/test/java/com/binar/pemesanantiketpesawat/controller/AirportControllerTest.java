@@ -95,7 +95,7 @@ class AirportControllerTest {
 
         when(airportService.getArrivalAirportFromDeparture(any(String.class))).thenReturn(airportList);
 
-        ResponseEntity<MessageModel> response = airportController.getDepartureAirport(departureRequest);
+        ResponseEntity<MessageModel> response = airportController.getDepartureAirport();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Success to get airport", response.getBody().getMessage());
@@ -110,7 +110,7 @@ class AirportControllerTest {
 
         when(airportService.getArrivalAirportFromDeparture(any(String.class))).thenReturn(null);
 
-        ResponseEntity<MessageModel> response = airportController.getDepartureAirport(departureRequest);
+        ResponseEntity<MessageModel> response = airportController.getDepartureAirport();
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         assertNull(response.getBody()); // Perubahan ini
