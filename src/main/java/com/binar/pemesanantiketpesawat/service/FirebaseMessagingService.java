@@ -55,7 +55,7 @@ public class FirebaseMessagingService {
         Notification notification = Notification.builder()
                 .setTitle("Promosi")
                 .setBody("Diskon Spesial Untuk Pelanggan Setia")
-                .setImage("https://st3.depositphotos.com/1064024/14272/i/450/depositphotos_142722813-stock-photo-heart-love-tree.jpg")
+                .setImage("http://mahasiswa.dinus.ac.id/images/foto/A/A11/2020/A11.2020.12870.jpg")
                 .build();
 
         Message message = Message.builder()

@@ -67,7 +67,7 @@ public class BookingServiceImplTest {
         passengers.add(passenger2);
 
         // Mocking the necessary dependencies
-        BookingRequest bookingRequest = new BookingRequest(UUID.randomUUID(), "ABC123", "Economy", 1, 0, 0, customers, passengers );
+        BookingRequest bookingRequest = new BookingRequest(UUID.randomUUID(), "http://mahasiswa.dinus.ac.id/images/foto/A/A11/2020/A11.2020.12870.jpg", "ABC123", "Economy", 1, 0, 0, customers, passengers );
         bookingRequest.setAirlineCode("ABC");
         bookingRequest.setFlightClass("Economy");
         bookingRequest.setAdult(1);

@@ -35,12 +35,13 @@ class BookingControllerTest {
     void testAddBooking() {
         // Create a sample BookingRequest
         UUID uuidUser = UUID.randomUUID();
+        String randomToken = "http://mahasiswa.dinus.ac.id/images/foto/A/A11/2020/A11.2020.12870.jpg";
         String airlineCode = "GA-544";
         String flightClass = "Economy";
         Integer adult = 1;
         Integer child = 0;
         Integer baby = 0;
-        BookingRequest bookingRequest = new BookingRequest(uuidUser, airlineCode, flightClass, adult, child, baby, null, null);
+        BookingRequest bookingRequest = new BookingRequest(uuidUser, randomToken, airlineCode, flightClass, adult, child, baby, null, null);
 
         // Mock the behavior of bookingService.saveDataBooking() method
         Booking savedBooking = new Booking();
