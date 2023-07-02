@@ -12,7 +12,12 @@ import com.binar.pemesanantiketpesawat.service.BookingService;
 import com.binar.pemesanantiketpesawat.service.DetailService;
 import com.binar.pemesanantiketpesawat.service.FirebaseMessagingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Random;
@@ -109,6 +114,20 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Booking> findByUuidUser(UUID uuidRequest) {
         return bookingRepository.findByUuidUser(uuidRequest);
+    }
+
+    @Override
+    @Modifying
+    @Transactional
+    public String deleteBookingByUuidUser(UUID uuidRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            String role = authority.getAuthority();
+            // Lakukan sesuatu dengan peran (role) yang ditemukan
+            System.out.println("User role: " + role);
+        }
+        bookingRepository.deleteByUuidUser(uuidRequest);
+        return "success deleted";
     }
 
     @Override

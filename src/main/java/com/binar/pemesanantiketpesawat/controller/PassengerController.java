@@ -6,6 +6,7 @@ import com.binar.pemesanantiketpesawat.service.PassengerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class PassengerController {
     private PassengerService passengerService;
 
     @GetMapping("/getAll")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     List<Passenger> getAllPenumpang() {
         log.info("Received request to get all passengers");
 
@@ -31,6 +33,7 @@ public class PassengerController {
     }
 
     @PostMapping("/Save")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     Passenger saveDataPenumpang(@RequestBody PassengerRequest the_passenger){
         log.info("Received request to save passenger");
 
@@ -57,6 +60,7 @@ public class PassengerController {
     }
 
     @PutMapping("/Update")
+    @PreAuthorize("hasRole('ROLE_BUYER')")
     Passenger updateEntityPenumpang(@RequestBody Passenger thePassenger) {
         log.info("Received request to update passenger");
 
