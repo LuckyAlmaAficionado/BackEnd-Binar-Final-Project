@@ -13,4 +13,5 @@ public interface BookingService {
     Booking searchBookingByCode(String bookingCodeRequest);
     List<Booking> getAllPesanan();
     List<Booking> findByUuidUser(UUID uuidRequest);
+    String deleteBookingByUuidUser(UUID uuidRequest);
 }

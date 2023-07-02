@@ -7,11 +7,15 @@ import com.binar.pemesanantiketpesawat.service.BookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -27,6 +31,7 @@ public class BookingController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     Booking addBooking(@RequestBody BookingRequest bookingRequest) {
         log.info("Received request to add booking");
 
@@ -61,6 +66,7 @@ public class BookingController {
     }
 
     @GetMapping("/getDataPemesan")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Booking> getDataPemesan() {
         log.info("Received request to get all bookings");
 
@@ -69,5 +75,13 @@ public class BookingController {
         log.info("Successfully retrieved all bookings");
 
         return bookings;
+    }
+
+    @Modifying
+    @Transactional
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deleteBooking(@RequestParam UUID uuidRequest) {
+        return bookingService.deleteBookingByUuidUser(uuidRequest);
     }
 }

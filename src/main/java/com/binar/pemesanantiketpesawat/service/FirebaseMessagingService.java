@@ -7,8 +7,10 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -84,5 +86,12 @@ public class FirebaseMessagingService {
             return "Error Sending Notification";
 
         }
+    }
+
+    @Transactional
+    @Modifying
+    public String deleteNotificationByUUID(UUID uuidRequest) {
+        repository.deleteByUuidUser(uuidRequest);
+        return "Success delete notification";
     }
 }
