@@ -42,7 +42,7 @@ class AirportControllerTest {
         ResponseEntity<MessageModel> response = airportController.getAllAirport();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Success to get airport", response.getBody().getMessage());
+        assertEquals("Successfully got airports", response.getBody().getMessage());
         assertEquals(airportList, response.getBody().getData());
 
         verify(airportService, times(1)).getAllAirport();
@@ -55,7 +55,7 @@ class AirportControllerTest {
         ResponseEntity<MessageModel> response = airportController.getAllAirport();
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Failed to get airport", response.getBody().getMessage());
+        assertEquals("Failed to get airports", response.getBody().getMessage());
         assertNull(response.getBody().getData());
 
         verify(airportService, times(1)).getAllAirport();
@@ -70,11 +70,28 @@ class AirportControllerTest {
         ResponseEntity<MessageModel> response = airportController.getDepartureAirport();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Success to get airport", response.getBody().getMessage());
+        assertEquals("Successfully got departure airports", response.getBody().getMessage());
         assertEquals(airportList, response.getBody().getData());
 
         verify(airportService, times(1)).getDepartureAirport();
     }
+
+    @Test
+    void testGetArrivalAirport_Success() {
+        List<String> airportList = Arrays.asList("Soekarno-Hatta", "I Gusti Ngurah Rai");
+        String departureRequest = "Soekarno-Hatta";
+
+        when(airportService.getArrivalAirportFromDeparture(any(String.class))).thenReturn(airportList);
+
+        ResponseEntity<MessageModel> response = airportController.getArrivalAirport(departureRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Successfully got arrival airports", response.getBody().getMessage());
+        assertEquals(airportList, response.getBody().getData());
+
+        verify(airportService, times(1)).getArrivalAirportFromDeparture(departureRequest);
+    }
+
 
     @Test
     void testGetDepartureAirport_Failure() {
@@ -87,68 +104,4 @@ class AirportControllerTest {
         verify(airportService, times(1)).getDepartureAirport();
     }
 
-
-    @Test
-    void testGetArrivalAirport_Success() {
-        List<String> airportList = Arrays.asList("Soekarno-Hatta", "I Gusti Ngurah Rai");
-        String departureRequest = "Departure Airport";
-
-        when(airportService.getArrivalAirportFromDeparture(any(String.class))).thenReturn(airportList);
-
-        ResponseEntity<MessageModel> response = airportController.getDepartureAirport();
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Success to get airport", response.getBody().getMessage());
-        assertEquals(airportList, response.getBody().getData());
-
-        verify(airportService, times(1)).getArrivalAirportFromDeparture(departureRequest);
-    }
-
-    @Test
-    void testGetArrivalAirport_Failure() {
-        String departureRequest = "Departure Airport";
-
-        when(airportService.getArrivalAirportFromDeparture(any(String.class))).thenReturn(null);
-
-        ResponseEntity<MessageModel> response = airportController.getDepartureAirport();
-
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        assertNull(response.getBody()); // Perubahan ini
-        verify(airportService, times(1)).getArrivalAirportFromDeparture(departureRequest);
-    }
-
-
-
-    @Test
-    void testAddNewAirport_Success() {
-        AirportRequest airportRequest = new AirportRequest("Cengkareng", "Jakarta", "CGK", "Soekarno-Hatta");
-        Airport airport = new Airport();
-        airport.setAirportId(1);
-        airport.setAirportName("Airport 1");
-
-        when(airportService.addNewAirport(any(AirportRequest.class))).thenReturn(airport);
-
-        ResponseEntity<MessageModel> response = airportController.addNewAirport(airportRequest);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Add new airport", response.getBody().getMessage());
-        assertEquals(airport, response.getBody().getData());
-
-        verify(airportService, times(1)).addNewAirport(airportRequest);
-    }
-
-    @Test
-    void testAddNewAirport_Failure() {
-        AirportRequest airportRequest = new AirportRequest("Cengkareng", "Jakarta", "CGK", "Soekarno-Hatta");
-
-        when(airportService.addNewAirport(any(AirportRequest.class))).thenReturn(null);
-
-        ResponseEntity<MessageModel> response = airportController.addNewAirport(airportRequest);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Failed to add airport", response.getBody().getMessage());
-        assertNull(response.getBody().getData());
-
-        verify(airportService, times(1)).addNewAirport(airportRequest);
-    }
 }

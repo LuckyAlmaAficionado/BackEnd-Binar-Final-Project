@@ -44,7 +44,7 @@ public class AirlineControllerTest {
 
         // Verify the response
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("success add new airline", response.getBody().getMessage());
+        assertEquals("Successfully added new airline", response.getBody().getMessage());
         assertEquals(airline, response.getBody().getData());
         verify(airlineService, times(1)).addNewAirline(airlineRequest);
     }
@@ -60,7 +60,7 @@ public class AirlineControllerTest {
 
         // Verify the response
         assertEquals(HttpStatus.BAD_GATEWAY, response.getStatusCode());
-        assertEquals("failed to add airline", response.getBody().getMessage());
+        assertEquals("Failed to add new airline", response.getBody().getMessage());
         verify(airlineService, times(1)).addNewAirline(airlineRequest);
     }
 
@@ -76,7 +76,7 @@ public class AirlineControllerTest {
 
         // Verify the response
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("success get airline by code CGK", response.getBody().getMessage());
+        assertEquals("Successfully got airline by code CGK", response.getBody().getMessage());
         assertEquals(airline, response.getBody().getData());
         verify(airlineService, times(1)).searchByAirlineCode(airlineCode);
     }
@@ -92,7 +92,7 @@ public class AirlineControllerTest {
 
         // Verify the response
         assertEquals(HttpStatus.BAD_GATEWAY, response.getStatusCode());
-        assertEquals("failed get airline by code CGK", response.getBody().getMessage());
+        assertEquals("Failed to get airline by code CGK", response.getBody().getMessage());
         verify(airlineService, times(1)).searchByAirlineCode(airlineCode);
     }
 
@@ -107,7 +107,7 @@ public class AirlineControllerTest {
 
         // Verify the response
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("success get all airline", response.getBody().getMessage());
+        assertEquals("Successfully got all airlines", response.getBody().getMessage());
         assertEquals(airlines.size(), ((List<AirlineResponse>) response.getBody().getData()).size());
         verify(airlineService, times(1)).getAllAirline();
     }
@@ -122,7 +122,7 @@ public class AirlineControllerTest {
 
         // Verify the response
         assertEquals(HttpStatus.BAD_GATEWAY, response.getStatusCode());
-        assertEquals("failed to get all airline", response.getBody().getMessage());
+        assertEquals("Failed to get all airlines", response.getBody().getMessage());
         verify(airlineService, times(1)).getAllAirline();
     }
 }

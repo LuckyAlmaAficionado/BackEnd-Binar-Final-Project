@@ -15,7 +15,7 @@ public class InvoiceServiceImplTest {
     public void testGenerateFlightInvoice() {
         try {
             // Load the JasperReport template file from classpath
-            InputStream reportStream = getClass().getResourceAsStream("src/main/resources/FlightInvoice.jrxml");
+            InputStream reportStream = getClass().getResourceAsStream("src/main/resources/static/FlightInvoice.jasper");
 
             if (reportStream == null) {
                 throw new FileNotFoundException("File not found: FlightInvoice.jrxml");

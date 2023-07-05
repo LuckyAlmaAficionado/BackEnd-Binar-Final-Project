@@ -9,12 +9,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 import java.io.IOException;
 
 @SpringBootApplication
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class PemesananTiketPesawatApplication {
 
     @Value("${app.firebase-configuration-file}")
@@ -26,14 +24,10 @@ public class PemesananTiketPesawatApplication {
 
     @Bean
     FirebaseMessaging firebaseMessaging() throws IOException {
-        GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new ClassPathResource(firebaseConfiguration).getInputStream());
-
         FirebaseOptions firebaseOptions = FirebaseOptions.builder()
-                .setCredentials(googleCredentials).build();
-
-        FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, "ui3tyb782trc2b78bt378");
+                .setCredentials(GoogleCredentials.fromStream(new ClassPathResource(firebaseConfiguration).getInputStream()))
+                .build();
+        FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions);
         return FirebaseMessaging.getInstance(app);
     }
-
 }

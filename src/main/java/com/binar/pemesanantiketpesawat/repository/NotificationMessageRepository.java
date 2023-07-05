@@ -18,5 +18,4 @@ public interface NotificationMessageRepository extends JpaRepository<Notificatio
     @Modifying
     @Query("DELETE FROM NotificationMessage e WHERE e.uuidUser = ?1")
     void deleteByUuidUser(UUID uuidUser);
-
 }

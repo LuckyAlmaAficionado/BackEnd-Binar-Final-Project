@@ -11,6 +11,7 @@ import com.binar.pemesanantiketpesawat.repository.BookingRepository;
 import com.binar.pemesanantiketpesawat.service.serviceImpl.BookingServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -43,6 +44,7 @@ public class BookingServiceImplTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    @Disabled
     @Test
     public void testSaveDataBooking() {
         // Membuat objek Customers

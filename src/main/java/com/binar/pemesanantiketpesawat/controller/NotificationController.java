@@ -1,11 +1,11 @@
 package com.binar.pemesanantiketpesawat.controller;
 
 import com.binar.pemesanantiketpesawat.model.NotificationMessage;
-import com.binar.pemesanantiketpesawat.service.FirebaseMessagingService;
-import lombok.extern.slf4j.Slf4j;
+import com.binar.pemesanantiketpesawat.service.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -18,26 +18,34 @@ import java.util.UUID;
 public class NotificationController {
     private static final Logger log = LoggerFactory.getLogger(NotificationController.class);
 
+    private final NotificationService firebaseMessagingService;
+
     @Autowired
-    FirebaseMessagingService firebaseMessagingService;
+    public NotificationController(NotificationService firebaseMessagingService) {
+        this.firebaseMessagingService = firebaseMessagingService;
+    }
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String sendNotificationByToken(@RequestBody NotificationMessage notificationMessage) {
+    public ResponseEntity<String> sendNotificationByToken(@RequestBody NotificationMessage notificationMessage) {
         log.info("Received request to send notification with title: '{}' and body: '{}'", notificationMessage.getTitle(), notificationMessage.getBody());
-        return  firebaseMessagingService.sendNotificationByToken(notificationMessage);
+        String result = firebaseMessagingService.sendNotificationByToken(notificationMessage);
+        return ResponseEntity.ok(result);
     }
 
     @Transactional
     @DeleteMapping("/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String deleteNotificationByUUID(@RequestParam UUID uuidRequest) {
-        return firebaseMessagingService.deleteNotificationByUUID(uuidRequest);
+    public ResponseEntity<String> deleteNotificationByUUID(@RequestParam UUID uuidRequest) {
+        String result = firebaseMessagingService.deleteNotificationByUUID(uuidRequest);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping
-    private List<NotificationMessage> getNotificationByUUID(@RequestParam UUID uuidRequest) {
+    private ResponseEntity<List<NotificationMessage>> getNotificationByUUID(@RequestParam UUID uuidRequest) {
+        log.info("Received request to get notification by UUID");
+        List<NotificationMessage> notifications = firebaseMessagingService.getByUUID(uuidRequest);
         log.info("Notification sent successfully");
-        return firebaseMessagingService.getByUUID(uuidRequest);
+        return ResponseEntity.ok(notifications);
     }
 }

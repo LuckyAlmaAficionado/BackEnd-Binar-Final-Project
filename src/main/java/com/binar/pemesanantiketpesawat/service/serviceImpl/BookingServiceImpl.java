@@ -10,7 +10,7 @@ import com.binar.pemesanantiketpesawat.repository.AirlineRepository;
 import com.binar.pemesanantiketpesawat.repository.BookingRepository;
 import com.binar.pemesanantiketpesawat.service.BookingService;
 import com.binar.pemesanantiketpesawat.service.DetailService;
-import com.binar.pemesanantiketpesawat.service.FirebaseMessagingService;
+import com.binar.pemesanantiketpesawat.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.Authentication;
@@ -26,16 +26,18 @@ import java.util.UUID;
 @Service
 public class BookingServiceImpl implements BookingService {
 
-    @Autowired
-    private BookingRepository bookingRepository;
-    @Autowired
-    private DetailService detailService;
-    @Autowired
-    private AirlineRepository airlineRepository;
-    @Autowired
-    private FirebaseMessagingService firebaseMessagingService;
+    private final BookingRepository bookingRepository;
+    private final DetailService detailService;
+    private final AirlineRepository airlineRepository;
+    private final NotificationService notificationService;
 
     @Autowired
+    public BookingServiceImpl(BookingRepository bookingRepository, DetailService detailService, AirlineRepository airlineRepository, NotificationService notificationService) {
+        this.bookingRepository = bookingRepository;
+        this.detailService = detailService;
+        this.airlineRepository = airlineRepository;
+        this.notificationService = notificationService;
+    }
 
     private String getDataForSavingIntoDatabase() {
         return null;
@@ -53,11 +55,9 @@ public class BookingServiceImpl implements BookingService {
         return salt.toString();
     }
 
+    @Override
     public Booking saveDataBooking(BookingRequest bookingRequest) {
-
-
         DetailFlight detailResponse = detailService.getDetailPenerbangan(bookingRequest.getAirlineCode(), bookingRequest.getFlightClass(), bookingRequest.getAdult(), bookingRequest.getChild(), 0);
-
         Airline airlineResponse = airlineRepository.findByAirlineCode(bookingRequest.getAirlineCode());
 
         String codeBooking = getRand().toUpperCase();
@@ -90,21 +90,19 @@ public class BookingServiceImpl implements BookingService {
                 bookingRequest.getPassengers()
         );
 
-
         NotificationMessage notificationMessage = new NotificationMessage(
-                0,
                 bookingRequest.getUuidUser(),
                 bookingRequest.getTokenFirebase(),
                 "Booking",
-                "Anda memiliki penerbangan dengan token " + codeBooking + " jangan lupa yaa..!",
+                "Anda memiliki penerbangan dengan token " + codeBooking + ". Jangan lupa ya!",
                 "http://mahasiswa.dinus.ac.id/images/foto/A/A11/2020/A11.2020.12797.jpg"
         );
 
-        String tokenResponse = firebaseMessagingService.sendNotificationByToken(notificationMessage);
+
+        String tokenResponse = notificationService.sendNotificationByToken(notificationMessage);
 
         return bookingRepository.save(tempBooking);
     }
-
 
     @Override
     public List<Booking> getAllPesanan() {

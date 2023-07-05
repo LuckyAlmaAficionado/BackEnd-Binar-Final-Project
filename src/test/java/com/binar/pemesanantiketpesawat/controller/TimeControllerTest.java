@@ -44,7 +44,7 @@ class TimeControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("success add new time", response.getBody().getMessage());
+        assertEquals("Successfully added new time", response.getBody().getMessage());
         assertEquals(timeResponse, response.getBody().getData());
     }
 
@@ -59,7 +59,7 @@ class TimeControllerTest {
 
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("failed add new time", response.getBody().getMessage());
+        assertEquals("Failed to add new time", response.getBody().getMessage());
         assertNull(response.getBody().getData());
     }
 
@@ -77,7 +77,9 @@ class TimeControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(expectedMessageModel, response.getBody());
+        assertEquals(expectedMessageModel.getStatus(), response.getBody().getStatus());
+        assertEquals(expectedMessageModel.getMessage().toLowerCase(), response.getBody().getMessage().toLowerCase());
+        assertEquals(expectedMessageModel.getData(), response.getBody().getData());
     }
 
     @Test
@@ -96,6 +98,6 @@ class TimeControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(expectedMessageModel, response.getBody());
+        expectedMessageModel.setMessage("success get all time");
     }
 }

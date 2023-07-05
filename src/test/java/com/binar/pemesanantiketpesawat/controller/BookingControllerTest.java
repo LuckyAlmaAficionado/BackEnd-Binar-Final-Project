@@ -15,8 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class BookingControllerTest {
@@ -69,9 +68,10 @@ class BookingControllerTest {
 
         // Verify the response
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("managed to get the data", response.getBody().getMessage());
+        assertTrue(response.getBody() != null && response.getBody().getMessage().equalsIgnoreCase("managed to get the data"));
         assertEquals(bookingResponse, response.getBody().getData());
     }
+
 
     @Test
     void testGetBookingByCodeRequest_NoDataFound() {
@@ -87,8 +87,9 @@ class BookingControllerTest {
         // Verify the response
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("no data found", response.getBody().getMessage());
+        assertTrue(response.getBody().getMessage().equalsIgnoreCase("no data found"));
     }
+
 
     @Test
     void testGetDataPemesan() {

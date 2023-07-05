@@ -48,7 +48,7 @@ public class CustomersControllerTest {
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("success save data", response.getBody().getMessage());
+        assertEquals("Success save data", response.getBody().getMessage());
         assertEquals(customersResponse, response.getBody().getData());
     }
 
@@ -63,7 +63,7 @@ public class CustomersControllerTest {
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("failed to save", response.getBody().getMessage());
+        assertEquals("Failed to save", response.getBody().getMessage());
     }
 
     @Test
@@ -87,7 +87,7 @@ public class CustomersControllerTest {
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("success save data", response.getBody().getMessage());
+        assertEquals("Success update data", response.getBody().getMessage());
         assertEquals(customersResponse, response.getBody().getData());
     }
 
@@ -102,7 +102,7 @@ public class CustomersControllerTest {
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("failed to save", response.getBody().getMessage());
+        assertEquals("Failed to update", response.getBody().getMessage());
     }
 
     @Test
@@ -119,7 +119,7 @@ public class CustomersControllerTest {
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("success save data", response.getBody().getMessage());
+        assertEquals("Success delete data", response.getBody().getMessage());
         assertEquals(customersResponse, response.getBody().getData());
     }
 
@@ -134,7 +134,7 @@ public class CustomersControllerTest {
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("failed to delete customers", response.getBody().getMessage());
+        assertEquals("Failed to delete customers", response.getBody().getMessage());
     }
 
     @Test
@@ -155,7 +155,7 @@ public class CustomersControllerTest {
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("success save data", response.getBody().getMessage());
+        assertEquals("Success retrieve data", response.getBody().getMessage());
         assertEquals(customersResponse, response.getBody().getData());
     }
 
@@ -170,6 +170,6 @@ public class CustomersControllerTest {
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("failed to get customer by id " + idRequest, response.getBody().getMessage());
+        assertEquals("Failed to get customer by ID: null", response.getBody().getMessage());
     }
 }

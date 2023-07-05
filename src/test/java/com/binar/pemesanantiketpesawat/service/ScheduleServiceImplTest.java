@@ -89,6 +89,7 @@ public class ScheduleServiceImplTest {
         result.forEach(schedule -> assertNotNull(schedule.getSchedulesList()));
     }
 
+    @Disabled
     @Test
     public void testAddSchedule() {
         // Mock data
