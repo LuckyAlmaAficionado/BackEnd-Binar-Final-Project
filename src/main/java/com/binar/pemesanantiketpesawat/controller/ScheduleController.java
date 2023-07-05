@@ -23,7 +23,10 @@ public class ScheduleController {
 
     @Autowired
     private ScheduleService scheduleService;
-
+    @GetMapping("/lol")
+    public String lol(){
+        return "masuk";
+    }
     @GetMapping("/favorite-destination")
     ResponseEntity<MessageModel> findByFavoriteDestination() {
         MessageModel messageModel = new MessageModel();
