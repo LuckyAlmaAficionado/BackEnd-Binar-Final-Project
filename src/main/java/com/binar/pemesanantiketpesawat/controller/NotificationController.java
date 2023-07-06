@@ -18,14 +18,18 @@ import java.util.UUID;
 public class NotificationController {
     private static final Logger log = LoggerFactory.getLogger(NotificationController.class);
 
+    private final FirebaseMessagingService firebaseMessagingService;
+
     @Autowired
-    FirebaseMessagingService firebaseMessagingService;
+    public NotificationController(FirebaseMessagingService firebaseMessagingService) {
+        this.firebaseMessagingService = firebaseMessagingService;
+    }
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String sendNotificationByToken(@RequestBody NotificationMessage notificationMessage) {
         log.info("Received request to send notification with title: '{}' and body: '{}'", notificationMessage.getTitle(), notificationMessage.getBody());
-        return  firebaseMessagingService.sendNotificationByToken(notificationMessage);
+        return firebaseMessagingService.sendNotificationByToken(notificationMessage);
     }
 
     @Transactional

@@ -1,7 +1,6 @@
 package com.binar.pemesanantiketpesawat.service;
 
 import com.binar.pemesanantiketpesawat.model.NotificationMessage;
-
 import java.util.List;
 import java.util.UUID;
 
