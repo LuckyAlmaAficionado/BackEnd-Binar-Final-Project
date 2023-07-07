@@ -62,26 +62,6 @@ public class CustomersServiceImplTest {
         verify(customersRepository, times(1)).findByCustomerId(eq(idRequest));
     }
 
-    @Disabled
-    @Test
-    public void testUpdateCustomersById_NotFound() {
-        // Arrange
-        Customers customersRequest = createCustomers();
-
-        when(customersRepository.findByCustomerId(eq(customersRequest.getCustomerId()))).thenReturn(customersRequest);
-
-        // Act
-        Customers result = customersService.updateCustomersById(customersRequest);
-
-        // Assert
-        Assertions.assertNull(result);
-        verify(customersRepository, times(1)).findByCustomerId(eq(customersRequest.getCustomerId()));
-        verify(customersRepository, never()).save(any(Customers.class));
-    }
-
-
-
-
     @Test
     public void testGetAllCustomers() {
         // Arrange
@@ -144,32 +124,6 @@ public class CustomersServiceImplTest {
         verify(customersRepository, times(1)).findById(eq(idRequest));
         verify(customersRepository, never()).deleteById(anyInt());
     }
-
-    @Disabled
-    @Test
-    public void testUpdateCustomersById() {
-        // Arrange
-        Customers customersRequest = createCustomers();
-        Customers customersResponse = createCustomers();
-        customersResponse.setFullName("Updated Name");
-
-        Customers updatedCustomers = createCustomers();
-        updatedCustomers.setFullName("Updated Name");
-
-        when(customersRepository.findByCustomerId(eq(customersRequest.getCustomerId()))).thenReturn(customersResponse);
-        when(customersRepository.save(any(Customers.class))).thenReturn(updatedCustomers);
-
-        // Act
-        Customers result = customersService.updateCustomersById(customersRequest);
-
-        // Assert
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(updatedCustomers, result);
-        Assertions.assertEquals("Updated Name", result.getFullName());
-        verify(customersRepository, times(1)).findByCustomerId(eq(customersRequest.getCustomerId()));
-        verify(customersRepository, times(1)).save(any(Customers.class));
-    }
-
 
     private Customers createCustomers() {
         Customers customers = new Customers();

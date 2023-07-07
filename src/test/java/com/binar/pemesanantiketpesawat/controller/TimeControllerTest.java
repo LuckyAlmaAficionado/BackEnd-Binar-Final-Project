@@ -44,7 +44,7 @@ class TimeControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("success add new time", response.getBody().getMessage());
+        assertEquals("Successfully added new time", response.getBody().getMessage());
         assertEquals(timeResponse, response.getBody().getData());
     }
 
@@ -59,7 +59,7 @@ class TimeControllerTest {
 
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("failed add new time", response.getBody().getMessage());
+        assertEquals("Failed to add new time", response.getBody().getMessage());
         assertNull(response.getBody().getData());
     }
 
@@ -68,7 +68,8 @@ class TimeControllerTest {
         // Arrange
         MessageModel<List<com.binar.pemesanantiketpesawat.model.Time>> expectedMessageModel = new MessageModel<>();
         expectedMessageModel.setStatus(HttpStatus.NO_CONTENT.value());
-        expectedMessageModel.setMessage("no time available");
+        expectedMessageModel.setMessage("No time available");
+        expectedMessageModel.setData(null);
 
         when(timeService.getAllTime()).thenReturn(Collections.emptyList());
 
@@ -80,13 +81,14 @@ class TimeControllerTest {
         assertEquals(expectedMessageModel, response.getBody());
     }
 
+
     @Test
     void testGetAllTime_WithData() {
         // Arrange
         List<com.binar.pemesanantiketpesawat.model.Time> timeList = Collections.singletonList(new com.binar.pemesanantiketpesawat.model.Time());
         MessageModel<List<com.binar.pemesanantiketpesawat.model.Time>> expectedMessageModel = new MessageModel<>();
         expectedMessageModel.setStatus(HttpStatus.OK.value());
-        expectedMessageModel.setMessage("success get all time");
+        expectedMessageModel.setMessage("Successfully retrieved all time");
         expectedMessageModel.setData(timeList);
 
         when(timeService.getAllTime()).thenReturn(timeList);

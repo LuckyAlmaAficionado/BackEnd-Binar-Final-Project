@@ -69,7 +69,7 @@ class BookingControllerTest {
 
         // Verify the response
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("managed to get the data", response.getBody().getMessage());
+        assertEquals("Managed to get the data", response.getBody().getMessage());
         assertEquals(bookingResponse, response.getBody().getData());
     }
 
@@ -87,7 +87,7 @@ class BookingControllerTest {
         // Verify the response
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("no data found", response.getBody().getMessage());
+        assertEquals("No data found", response.getBody().getMessage());
     }
 
     @Test

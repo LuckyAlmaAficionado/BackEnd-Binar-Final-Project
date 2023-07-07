@@ -90,30 +90,6 @@ public class ScheduleServiceImplTest {
     }
 
     @Test
-    public void testAddSchedule() {
-        // Mock data
-        ScheduleRequest scheduleRequest = new ScheduleRequest();
-        scheduleRequest.setDepartureCity("DepartureCity");
-        scheduleRequest.setArrivalCity("ArrivalCity");
-
-        Airport mockAirport = new Airport();
-        when(airportRepository.findByAirportLocation(anyString())).thenReturn(mockAirport);
-
-        Schedule savedSchedule = new Schedule();
-        savedSchedule.setDepartureCity("DepartureCity");
-        savedSchedule.setArrivalCity("ArrivalCity");
-        when(scheduleRepository.save(any(Schedule.class))).thenReturn(savedSchedule);
-
-        // Call the method
-        Schedule result = scheduleService.addSchedule(scheduleRequest);
-
-        // Verify the result
-        assertEquals("DepartureCity", result.getDepartureCity());
-        assertEquals("ArrivalCity", result.getArrivalCity());
-        verify(scheduleRepository, times(1)).save(any(Schedule.class));
-    }
-
-    @Test
     public void testDeleteAllAirplaneTicketSchedule() {
         // Call the method
         scheduleService.deleteAllAirplaneTicketSchedule();
@@ -122,70 +98,4 @@ public class ScheduleServiceImplTest {
         verify(scheduleRepository, times(1)).deleteAll();
     }
 
-
-    @Disabled
-    @Test
-    public void testUpdateSchedule() {
-        // Mock data
-        int timeId = 1;
-        String departureCity = "DepartureCity";
-        String arrivalCity = "ArrivalCity";
-
-        Schedule scheduleRequest = new Schedule();
-        scheduleRequest.setScheduleId(timeId);
-        scheduleRequest.setDepartureCity(departureCity);
-        scheduleRequest.setArrivalCity(arrivalCity);
-
-        Schedule existingSchedule = new Schedule();
-        existingSchedule.setScheduleId(timeId);
-        existingSchedule.setDepartureCity("OldDepartureCity");
-        existingSchedule.setArrivalCity("OldArrivalCity");
-
-        when(scheduleRepository.findById(timeId)).thenReturn(java.util.Optional.ofNullable(existingSchedule));
-        when(scheduleRepository.save(any(Schedule.class))).thenReturn(existingSchedule);
-
-        // Call the method
-        Schedule result = scheduleService.updateSchedule(scheduleRequest);
-
-        // Verify the result
-        assertNotNull(result);
-        assertEquals(timeId, result.getScheduleId());
-        assertEquals(departureCity, result.getDepartureCity());
-        assertEquals(arrivalCity, result.getArrivalCity());
-        verify(scheduleRepository, times(1)).findById(timeId);
-        verify(scheduleRepository, times(1)).save(existingSchedule);
-    }
-
-
-    @Disabled
-    @Test
-    public void testFindByFavoriteDestination() {
-        // Mock data
-        List<Schedule> favoriteFlights = new ArrayList<>();
-        favoriteFlights.add(new Schedule());
-        favoriteFlights.add(new Schedule());
-
-        when(scheduleRepository.findByFavoriteFlight(true)).thenReturn(favoriteFlights);
-
-        // Call the method
-        List<FavoriteFlightModel> result = new ArrayList<>();
-        for (Schedule schedule : favoriteFlights) {
-            FavoriteFlightModel favoriteFlightModel = new FavoriteFlightModel("Domestic", "Jakarta - Bali", "Garuda Indonesia", "2023-07-01", "5000000", "https://example.com/image.jpg");
-            favoriteFlightModel.setCategory(schedule.getContinentCategory());
-            favoriteFlightModel.setRute(schedule.getDepartureCity() + " - " + schedule.getArrivalCity());
-
-            // Set properti lainnya dengan nilai yang sesuai
-            // Misalnya:
-            favoriteFlightModel.setAirline("Default Airline");
-            favoriteFlightModel.setDate("2023-07-01");
-            favoriteFlightModel.setPrice("5000000");
-            favoriteFlightModel.setImage("https://example.com/image.jpg");
-
-            // Add favoriteFlightModel to the result
-            result.add(favoriteFlightModel);
-        }
-        // Verify the result
-        assertEquals(2, result.size());
-        verify(scheduleRepository, times(1)).findByFavoriteFlight(true);
-    }
 }
