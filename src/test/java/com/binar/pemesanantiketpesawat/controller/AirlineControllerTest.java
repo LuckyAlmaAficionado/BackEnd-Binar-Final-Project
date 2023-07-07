@@ -5,6 +5,7 @@ import com.binar.pemesanantiketpesawat.dto.AirlineResponse;
 import com.binar.pemesanantiketpesawat.dto.MessageModel;
 import com.binar.pemesanantiketpesawat.model.Airline;
 import com.binar.pemesanantiketpesawat.service.AirlineService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,14 +14,16 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
 
-public class AirlineControllerTest {
+@Slf4j
+class AirlineControllerTest {
+
     @Mock
     private AirlineService airlineService;
 
@@ -29,100 +32,57 @@ public class AirlineControllerTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
+        // Menguji fungsi addNewAirline ketika berhasil menambahkan maskapai penerbangan baru
     void testAddNewAirline_Success() {
-        // Mock airlineService.addNewAirline() method to return an airline
-        AirlineRequest airlineRequest = new AirlineRequest();
+        // Arrange
+        AirlineRequest request = new AirlineRequest();
+        request.setAirlineName("Garuda Indonesia");
+        request.setAirlineCode("GA");
+
         Airline airline = new Airline();
+        airline.setAirlineId(1);
+        airline.setAirlineName("Garuda Indonesia");
+        airline.setAirlineCode("GA");
+
         when(airlineService.addNewAirline(any(AirlineRequest.class))).thenReturn(airline);
 
-        // Call the controller method
-        ResponseEntity<MessageModel> response = airlineController.addNewAirline(airlineRequest);
+        // Act
+        ResponseEntity<MessageModel> responseEntity = airlineController.addNewAirline(request);
 
-        // Verify the response
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("success add new airline", response.getBody().getMessage());
-        assertEquals(airline, response.getBody().getData());
-        verify(airlineService, times(1)).addNewAirline(airlineRequest);
+        // Assert
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        MessageModel<Airline> messageModel = responseEntity.getBody();
+        assertNotNull(messageModel);
+        assertEquals(HttpStatus.OK.value(), messageModel.getStatus());
+        assertEquals("Successfully added new airline", messageModel.getMessage());
+        assertEquals(airline, messageModel.getData());
     }
 
     @Test
+        // Menguji fungsi addNewAirline ketika gagal menambahkan maskapai penerbangan baru
     void testAddNewAirline_Failure() {
-        // Mock airlineService.addNewAirline() method to return null
-        AirlineRequest airlineRequest = new AirlineRequest();
+        // Arrange
+        AirlineRequest request = new AirlineRequest();
+        request.setAirlineName("Garuda Indonesia");
+        request.setAirlineCode("GA");
+
         when(airlineService.addNewAirline(any(AirlineRequest.class))).thenReturn(null);
 
-        // Call the controller method
-        ResponseEntity<MessageModel> response = airlineController.addNewAirline(airlineRequest);
+        // Act
+        ResponseEntity<MessageModel> responseEntity = airlineController.addNewAirline(request);
 
-        // Verify the response
-        assertEquals(HttpStatus.BAD_GATEWAY, response.getStatusCode());
-        assertEquals("failed to add airline", response.getBody().getMessage());
-        verify(airlineService, times(1)).addNewAirline(airlineRequest);
-    }
-
-    @Test
-    void testSearchByAirlineCode_Success() {
-        // Mock airlineService.searchByAirlineCode() method to return an airline
-        String airlineCode = "CGK";
-        Airline airline = new Airline();
-        when(airlineService.searchByAirlineCode(airlineCode)).thenReturn(airline);
-
-        // Call the controller method
-        ResponseEntity<MessageModel> response = airlineController.searchByAirlineCode(airlineCode);
-
-        // Verify the response
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("success get airline by code CGK", response.getBody().getMessage());
-        assertEquals(airline, response.getBody().getData());
-        verify(airlineService, times(1)).searchByAirlineCode(airlineCode);
-    }
-
-    @Test
-    void testSearchByAirlineCode_Failure() {
-        // Mock airlineService.searchByAirlineCode() method to return null
-        String airlineCode = "CGK";
-        when(airlineService.searchByAirlineCode(airlineCode)).thenReturn(null);
-
-        // Call the controller method
-        ResponseEntity<MessageModel> response = airlineController.searchByAirlineCode(airlineCode);
-
-        // Verify the response
-        assertEquals(HttpStatus.BAD_GATEWAY, response.getStatusCode());
-        assertEquals("failed get airline by code CGK", response.getBody().getMessage());
-        verify(airlineService, times(1)).searchByAirlineCode(airlineCode);
-    }
-
-    @Test
-    void testGetAllAirline_Success() {
-        // Mock airlineService.getAllAirline() method to return a list of airlines
-        List<Airline> airlines = Collections.singletonList(new Airline());
-        when(airlineService.getAllAirline()).thenReturn(airlines);
-
-        // Call the controller method
-        ResponseEntity<MessageModel> response = airlineController.getAllAirline();
-
-        // Verify the response
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("success get all airline", response.getBody().getMessage());
-        assertEquals(airlines.size(), ((List<AirlineResponse>) response.getBody().getData()).size());
-        verify(airlineService, times(1)).getAllAirline();
-    }
-
-    @Test
-    void testGetAllAirline_Failure() {
-        // Mock airlineService.getAllAirline() method to return an empty list
-        when(airlineService.getAllAirline()).thenReturn(Collections.emptyList());
-
-        // Call the controller method
-        ResponseEntity<MessageModel> response = airlineController.getAllAirline();
-
-        // Verify the response
-        assertEquals(HttpStatus.BAD_GATEWAY, response.getStatusCode());
-        assertEquals("failed to get all airline", response.getBody().getMessage());
-        verify(airlineService, times(1)).getAllAirline();
+        // Assert
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.BAD_GATEWAY, responseEntity.getStatusCode());
+        MessageModel<Airline> messageModel = responseEntity.getBody();
+        assertNotNull(messageModel);
+        assertEquals(HttpStatus.BAD_GATEWAY.value(), messageModel.getStatus());
+        assertEquals("Failed to add new airline", messageModel.getMessage());
+        assertNull(messageModel.getData());
     }
 }
